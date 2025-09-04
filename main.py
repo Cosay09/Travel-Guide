@@ -12,48 +12,77 @@ PAGES = (
     "Day Trips & Hidden Gems",
 )
 
+
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("Travel Guide")
-        self.geometry("1100x700")
+        self.geometry("1000x600")
 
-        # Theme / appearance
-        ctk.set_appearance_mode("light")      # "light", "dark", or "system"
-        ctk.set_default_color_theme("blue")    # "blue", "green", "dark-blue"
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("blue")
 
-        # Layout: 1 column for sidebar, 1 for content
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_rowconfigure(0, weight=1)
+        # track sidebar state
+        self.sidebar_visible = False
 
-        # Sidebar
-        self.sidebar = ctk.CTkFrame(self, width=220, corner_radius=0)
-        self.sidebar.grid(row=0, column=0, sticky="nsew")
-        self.sidebar.grid_rowconfigure(99, weight=1)  # pushes items up
+        # ---- Topbar ----
+        self.topbar = ctk.CTkFrame(self, height=50, corner_radius=0)
+        self.topbar.pack(side="top", fill="x")
 
-        title = ctk.CTkLabel(self.sidebar, text="Travel Guide",
-                             font=ctk.CTkFont(size=18, weight="bold"))
-        title.pack(pady=(20, 10))
+        self.menu_btn = ctk.CTkButton(
+            self.topbar, text="☰", width=40, command=self.toggle_sidebar
+        )
+        self.menu_btn.pack(side="left", padx=10, pady=8)
 
-        self.buttons = {}
-        for name in PAGES:
-            btn = ctk.CTkButton(
-                self.sidebar, text=name,
-                command=lambda n=name: self.show_page(n),
-                anchor="w"
-            )
-            btn.pack(fill="x", padx=12, pady=6)
-            self.buttons[name] = btn
+        self.title_lbl = ctk.CTkLabel(
+            self.topbar, text="Travel Guide", font=ctk.CTkFont(size=18, weight="bold")
+        )
+        self.title_lbl.pack(side="left", padx=6)
 
-        # Content area
-        self.content = ctk.CTkFrame(self, corner_radius=0)
-        self.content.grid(row=0, column=1, sticky="nsew")
-        self.content.grid_rowconfigure(0, weight=1)
-        self.content.grid_columnconfigure(0, weight=1)
+        # ---- Main body (below topbar) ----
+        self.body = ctk.CTkFrame(self, corner_radius=0)
+        self.body.pack(side="top", fill="both", expand=True)
 
-        # Page cache
+        # sidebar frame (starts hidden, will be packed on left)
+        self.sidebar = ctk.CTkFrame(self.body, width=220, corner_radius=0)
+
+        # content area (always present)
+        self.content = ctk.CTkFrame(self.body, corner_radius=0)
+        self.content.pack(side="right", fill="both", expand=True)
+
+        # pages cache
         self.pages = {}
         self.show_page("Overview")
+
+    def build_sidebar(self):
+        """Builds sidebar buttons only once."""
+        if hasattr(self, "sidebar_built") and self.sidebar_built:
+            return
+        self.sidebar_built = True
+
+        head = ctk.CTkLabel(
+            self.sidebar, text="Menu", font=ctk.CTkFont(size=16, weight="bold")
+        )
+        head.pack(padx=12, pady=(14, 8), anchor="w")
+
+        for name in PAGES:
+            btn = ctk.CTkButton(
+                self.sidebar,
+                text=name,
+                anchor="w",
+                command=lambda n=name: self.show_page(n),
+            )
+            btn.pack(fill="x", padx=12, pady=6)
+
+    def toggle_sidebar(self):
+        if self.sidebar_visible:
+            self.sidebar.pack_forget()
+            self.sidebar_visible = False
+        else:
+            self.build_sidebar()
+            # ✅ pack sidebar first so it appears on the LEFT
+            self.sidebar.pack(side="left", fill="y")
+            self.sidebar_visible = True
 
     def get_page(self, name):
         if name not in self.pages:
@@ -61,33 +90,36 @@ class App(ctk.CTk):
                 self.pages[name] = OverviewPage(self.content)
             else:
                 self.pages[name] = PlaceholderPage(self.content, name)
-            self.pages[name].grid(row=0, column=0, sticky="nsew")
+            self.pages[name].pack(fill="both", expand=True)
         return self.pages[name]
 
     def show_page(self, name):
+        # clear current
+        for widget in self.content.winfo_children():
+            widget.pack_forget()
         page = self.get_page(name)
-        page.tkraise()
+        page.pack(fill="both", expand=True)
 
+
+# ---- Example pages ----
 class OverviewPage(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent)
         ctk.CTkLabel(
             self,
-            text="Welcome! Pick a destination to begin.",
-            font=ctk.CTkFont(size=20, weight="bold")
+            text="Welcome to the Travel Guide!",
+            font=ctk.CTkFont(size=22, weight="bold"),
         ).pack(pady=30)
-        ctk.CTkLabel(
-            self,
-            text="This is the Overview page placeholder."
-        ).pack()
+        ctk.CTkLabel(self, text="Click ☰ to open the menu").pack(pady=10)
+
 
 class PlaceholderPage(ctk.CTkFrame):
     def __init__(self, parent, name):
         super().__init__(parent)
         ctk.CTkLabel(
-            self, text=f"{name} page coming soon…",
-            font=ctk.CTkFont(size=18)
-        ).pack(pady=30)
+            self, text=f"{name} page coming soon…", font=ctk.CTkFont(size=18)
+        ).pack(pady=40)
+
 
 if __name__ == "__main__":
     app = App()
