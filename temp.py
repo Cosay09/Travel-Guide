@@ -1,4 +1,6 @@
 import customtkinter as ctk
+from customtkinter import CTkImage
+from PIL import Image
 
 PAGES = (
     "Overview",
@@ -88,6 +90,8 @@ class App(ctk.CTk):
         if name not in self.pages:
             if name == "Overview":
                 self.pages[name] = OverviewPage(self.content)
+            elif name == "Top Attractions":
+                self.pages[name] = TopAttractionsPage(self.content)
             else:
                 self.pages[name] = PlaceholderPage(self.content, name)
             self.pages[name].pack(fill="both", expand=True)
@@ -97,9 +101,8 @@ class App(ctk.CTk):
         # clear current
         for widget in self.content.winfo_children():
             widget.pack_forget()
-        page = self.get_page(name)
+        page=self.get_page(name)
         page.pack(fill="both", expand=True)
-
 
 # ---- Example pages ----
 class OverviewPage(ctk.CTkFrame):
@@ -119,6 +122,55 @@ class PlaceholderPage(ctk.CTkFrame):
         ctk.CTkLabel(
             self, text=f"{name} page coming soon…", font=ctk.CTkFont(size=18)
         ).pack(pady=40)
+
+class TopAttractionsPage(ctk.CTkScrollableFrame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        ctk.CTkLabel(
+            self,
+            text="Top Attractions",
+            font=ctk.CTkFont(size=22, weight="bold")
+        ).pack(pady=20)
+
+        # Sample attractions: (name, description, image_path)
+        attractions = [
+            ("Cox's Bazar Beach", "Longest natural sandy sea beach.", "assets/images/coxsbazar.jpg"),
+            ("Sundarbans", "Largest mangrove forest in the world.", "assets/images/sundarban.jpg"),
+            ("Ahsan Manzil", "Historic palace in Dhaka.", "assets/images/ahsanmanjil.jpg"),
+        ]
+
+        self.images = []  # keep references
+
+        for name, desc, img_path in attractions:
+            img = Image.open(img_path)
+
+            frame = ctk.CTkFrame(self, corner_radius=8)
+            frame.pack(fill="x", padx=20, pady=10)
+
+            # background image label
+            bg_label = ctk.CTkLabel(frame, text="")
+            bg_label.place(relx=0, rely=0, relwidth=1, relheight=1)
+
+            # overlay title
+            title_label = ctk.CTkLabel(frame, text=name, font=ctk.CTkFont(size=18, weight="bold"))
+            title_label.place(relx=0.05, rely=0.05, anchor="nw")
+
+            # overlay description
+            desc_label = ctk.CTkLabel(frame, text=desc, wraplength=500, justify="left")
+            desc_label.place(relx=0.05, rely=0.25, anchor="nw")
+
+            def resize_image(event, bg=bg_label, pil_img=img):
+                new_width = event.width
+                new_height = int(event.height)   # scale fully with frame
+                resized_img = pil_img.resize((new_width, new_height), Image.LANCZOS)
+                ctk_img = ctk.CTkImage(light_image=resized_img, dark_image=resized_img, size=(new_width, new_height))
+                bg.configure(image=ctk_img)
+                bg.image = ctk_img  # keep reference
+
+                # also resize text wraplength with frame
+                desc_label.configure(wraplength=int(new_width * 0.9))
+
+            frame.bind("<Configure>", resize_image)
 
 
 if __name__ == "__main__":
