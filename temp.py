@@ -338,54 +338,48 @@ class TopAttractionsPage(ctk.CTkScrollableFrame):
             font=ctk.CTkFont(size=22, weight="bold")
         ).pack(pady=20)
 
-        # Sample attractions: (name, description, image_path)
+        # Sample attractions: (name, image_path)
         attractions = [
-            ("Cox's Bazar Beach", "Longest natural sandy sea beach.", "assets/images/coxsbazar.jpg"),
-            ("Sundarbans", "Largest mangrove forest in the world.", "assets/images/sundarban.jpg"),
-            ("Ahsan Manzil", "Historic palace in Dhaka.", "assets/images/ahsanmanjil.jpg"),
+            ("Cox's Bazar Beach", "assets/images/coxsbazar.jpg"),
+            ("Saint Martin's Island", "assets/images/saint_martin.jpg"),
+            ("Sundarbans", "assets/images/sundarban.jpg"),
+            ("Sajek Valley", "assets/images/sajek_valley.jpg"),
+            ("Ahsan Manzil", "assets/images/ahsanmanjil.jpg"),
+            ("Sukhiya Valley", "assets/images/sukhiya_valley.jpg"),
+            ("Kaptai Lake", "assets/images/kaptai_lake.jpg"),
+            ("Jaflong", "assets/images/jaflong.jpg"),
+            ("Langlok Waterfall", "assets/images/langlok_waterfall.jpg"),
+            ("Bholaganj", "assets/images/bholaganj.jpg"),
+            ("Tanguar Haor", "assets/images/tanguar_haor.jpg"),
+            ("As-Salam Jame Mosque", "assets/images/as_salam_jame_mosque.jpg"),
         ]
 
         self.images = []  # keep references to CTkImages
 
-        for name, desc, img_path in attractions:
+        # create a frame to hold grid
+        grid_frame = ctk.CTkFrame(self)
+        grid_frame.pack(padx=20, pady=10, fill="both", expand=True)
+
+        # configure grid columns
+        grid_frame.grid_columnconfigure(0, weight=1, uniform="col")
+        grid_frame.grid_columnconfigure(1, weight=1, uniform="col")
+
+        for idx, (name, img_path) in enumerate(attractions):
             img = Image.open(img_path)
-
-            # create frame with a fixed min height
-            frame = ctk.CTkFrame(self, corner_radius=8)
-            frame.pack(fill="x", padx=20, pady=10)
-            frame.update_idletasks()  # force geometry update
-            min_height = 200
-            frame.configure(height=min_height)
-
-            # initial CTkImage (scaled)
-            ctk_img = ctk.CTkImage(light_image=img, dark_image=img, size=(800, min_height))
-
-            # background label
-            bg_label = ctk.CTkLabel(frame, image=ctk_img, text="")
-            bg_label.place(relx=0, rely=0, relwidth=1, relheight=1)
+            ctk_img = ctk.CTkImage(light_image=img, dark_image=img, size=(400, 200))
             self.images.append(ctk_img)
 
-            # overlay title
-            title_label = ctk.CTkLabel(frame, text=name, font=ctk.CTkFont(size=18, weight="bold"))
-            title_label.place(relx=0.05, rely=0.05, anchor="nw")
+            # create block frame
+            block = ctk.CTkFrame(grid_frame, corner_radius=20)
+            block.grid(row=idx//2, column=idx%2, padx=10, pady=10, sticky="nsew")
 
-            # overlay description
-            desc_label = ctk.CTkLabel(frame, text=desc, wraplength=500, justify="left")
-            desc_label.place(relx=0.05, rely=0.25, anchor="nw")
+            # image label
+            img_label = ctk.CTkLabel(block, image=ctk_img, text="")
+            img_label.pack(fill="both", expand=True)
 
-            # resize event
-            def resize_image(event, bg=bg_label, pil_img=img, desc_lbl=desc_label):
-                new_width = max(event.width, 100)
-                new_height = max(event.height, 100)
-                resized_img = pil_img.resize((new_width, new_height), Image.LANCZOS)
-                ctk_img = ctk.CTkImage(light_image=resized_img, dark_image=resized_img, size=(new_width, new_height))
-                bg.configure(image=ctk_img)
-                bg.image = ctk_img
-                desc_lbl.configure(wraplength=int(new_width * 0.9))
-
-            frame.bind("<Configure>", resize_image)
-
-
+            # overlay name
+            name_label = ctk.CTkLabel(block, text=name, font=ctk.CTkFont(size=16, weight="bold"))
+            name_label.place(relx=0.05, rely=0.05, anchor="nw")
 
 
 # ---------- RUN APP ----------
