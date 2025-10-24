@@ -87,19 +87,25 @@ class App(ctk.CTk):
         )
         self.title_lbl.pack(side="left", padx=6)
 
-        # Main body
+        # Main body (use grid for stable left/right layout)
         self.body = ctk.CTkFrame(self, corner_radius=0)
         self.body.pack(side="top", fill="both", expand=True)
 
-        # Sidebar (initially hidden)
-        self.sidebar = ctk.CTkFrame(self.body, width=220, corner_radius=0)
+        # Make a 2-column grid: 0 = sidebar, 1 = content
+        self.body.grid_rowconfigure(0, weight=1)
+        self.body.grid_columnconfigure(1, weight=1)   # content column expands
 
-        # Content
+        # Sidebar (initially created but hidden)
+        self.sidebar = ctk.CTkFrame(self.body, width=220, corner_radius=0)
+        # don't grid() it yet — keep hidden until toggled
+        # self.sidebar.grid(row=0, column=0, sticky="ns")  # NOT here
+
+        # Content (always present)
         self.content = ctk.CTkFrame(self.body, corner_radius=0)
-        self.content.pack(side="left", fill="both", expand=True)
+        self.content.grid(row=0, column=1, sticky="nsew")  # column 1 (right side)
 
         self.pages = {}
-        self.show_page("Overview")
+        self.show_page("Overview")  # show default page
 
 
     def build_sidebar(self):
@@ -107,26 +113,44 @@ class App(ctk.CTk):
             return
         self.sidebar_built = True
 
-        ctk.CTkLabel(self.sidebar, text="Menu", font=ctk.CTkFont(size=16, weight="bold")).pack(padx=12, pady=(14, 8), anchor="w")
+        ctk.CTkLabel(
+            self.sidebar, text="Menu", font=ctk.CTkFont(size=16, weight="bold")
+        ).pack(padx=12, pady=(14, 8), anchor="w")
 
         for name in PAGES:
-            ctk.CTkButton(self.sidebar, text=name, anchor="w",
-                          command=lambda n=name: self.show_page(n)).pack(fill="x", padx=12, pady=6)
+            # use lambda bound to 'self' properly
+            ctk.CTkButton(
+                self.sidebar,
+                text=name,
+                anchor="w",
+                command=lambda n=name, app=self: app.show_page(n)
+            ).pack(fill="x", padx=12, pady=6)
 
         # logout button at bottom
-        ctk.CTkButton(self.sidebar, text="Logout", fg_color="red", hover_color="#b30000",
-                      command=self.logout).pack(fill="x", padx=12, pady=20, side="bottom")
+        ctk.CTkButton(
+            self.sidebar,
+            text="Logout",
+            fg_color="red",
+            hover_color="#b30000",
+            command=self.logout
+        ).pack(fill="x", padx=12, pady=20, side="bottom")
+
 
 
     def toggle_sidebar(self):
         if self.sidebar_visible:
-            self.sidebar.pack_forget()
+            # hide sidebar
+            try:
+                self.sidebar.grid_remove()
+            except Exception:
+                pass
             self.sidebar_visible = False
         else:
+            # ensure sidebar buttons exist
             self.build_sidebar()
-            self.sidebar.pack(side="left", fill="y")
+            # show sidebar in column 0 (left)
+            self.sidebar.grid(row=0, column=0, sticky="ns")
             self.sidebar_visible = True
-
 
     def get_page(self, name):
         if name not in self.pages:
@@ -134,14 +158,21 @@ class App(ctk.CTk):
                 self.pages[name] = OverviewPage(self.content)
             else:
                 self.pages[name] = PlaceholderPage(self.content, name)
+            self.pages[name].pack(fill="both", expand=True)
         return self.pages[name]
 
-
     def show_page(self, name):
+        # Clear old widgets from the content frame
         for widget in self.content.winfo_children():
-            widget.pack_forget()
+            widget.grid_forget()
+
         page = self.get_page(name)
-        page.pack(fill="both", expand=True)
+        page.grid(row=0, column=0, sticky="nsew")
+
+        # Make sure the page expands with the content area
+        self.content.grid_rowconfigure(0, weight=1)
+        self.content.grid_columnconfigure(0, weight=1)    
+
 
 
     def logout(self):
