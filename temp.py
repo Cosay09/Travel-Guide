@@ -237,11 +237,30 @@ class LoginFrame(ctk.CTkFrame):
         self.build_ui()
 
     def build_ui(self):
-        ctk.CTkLabel(self, text="Welcome to Travel Guide", font=ctk.CTkFont(size=20, weight="bold")).pack(pady=(60, 20))
-        self.email_entry = ctk.CTkEntry(self, placeholder_text="Email")
+        ctk.CTkLabel(
+            self, 
+            text="Welcome to Travel Guide", 
+            font=ctk.CTkFont(size=24, weight="bold")).pack(pady=(60, 20))
+        
+        # Email Entry
+        self.email_entry = ctk.CTkEntry(self, 
+                                        placeholder_text="Email", 
+                                        width=300, font=ctk.CTkFont(size=16))
         self.email_entry.pack(pady=10)
-        self.password_entry = ctk.CTkEntry(self, placeholder_text="Password", show="*")
+
+        # Password Entry
+        self.password_entry = ctk.CTkEntry(self, 
+                                           placeholder_text="Password", 
+                                           show="*", 
+                                           width=300, 
+                                           font=ctk.CTkFont(size=16))
         self.password_entry.pack(pady=10)
+
+        
+        # Bind Enter key to trigger login
+        self.email_entry.bind("<Return>", lambda event: self.login())
+        self.password_entry.bind("<Return>", lambda event: self.login())
+
         ctk.CTkButton(self, text="Login", command=self.login).pack(pady=10)
         ctk.CTkButton(self, text="Register", command=self.open_register).pack(pady=5)
         ctk.CTkButton(self, text="Continue as Guest", fg_color="gray", command=self.login_guest).pack(pady=20)
