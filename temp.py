@@ -1,7 +1,31 @@
 import customtkinter as ctk
-from customtkinter import CTkImage
+import sqlite3
+import hashlib
+import os
 from PIL import Image
 
+DB_PATH = "data/users.db"
+
+# ---------- DATABASE SETUP ----------
+def init_db():
+    os.makedirs("data", exist_ok=True)
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            email TEXT PRIMARY KEY,
+            name TEXT,
+            password TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
+
+
+# ---------- MAIN APP ----------
 PAGES = (
     "Overview",
     "Top Attractions",
@@ -24,57 +48,75 @@ class App(ctk.CTk):
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
 
-        # track sidebar state
+        init_db()
+
+        # start with login screen
+        self.login_frame = LoginFrame(self, self.on_login_success)
+        self.login_frame.pack(fill="both", expand=True)
+
+
+    # ---- called when login/register/guest success ----
+    def on_login_success(self, email, is_guest):
+        self.user_email = email
+        self.is_guest = is_guest
+
+        # properly remove login frame
+        self.login_frame.pack_forget()
+        self.login_frame.update()
+        self.login_frame.destroy()
+
+        # now safely build main UI
+        self.build_main_ui()
+
+
+    # ---- build the actual app ----
+    def build_main_ui(self):
+        # sidebar state
         self.sidebar_visible = False
 
-        # ---- Topbar ----
+        # Topbar
         self.topbar = ctk.CTkFrame(self, height=50, corner_radius=0)
         self.topbar.pack(side="top", fill="x")
 
-        self.menu_btn = ctk.CTkButton(
-            self.topbar, text="☰", width=40, command=self.toggle_sidebar
-        )
+        self.menu_btn = ctk.CTkButton(self.topbar, text="☰", width=40, command=self.toggle_sidebar)
         self.menu_btn.pack(side="left", padx=10, pady=8)
 
         self.title_lbl = ctk.CTkLabel(
-            self.topbar, text="Travel Guide", font=ctk.CTkFont(size=18, weight="bold")
+            self.topbar, text=f"Travel Guide ({'Guest' if self.is_guest else self.user_email})",
+            font=ctk.CTkFont(size=18, weight="bold")
         )
         self.title_lbl.pack(side="left", padx=6)
 
-        # ---- Main body (below topbar) ----
+        # Main body
         self.body = ctk.CTkFrame(self, corner_radius=0)
         self.body.pack(side="top", fill="both", expand=True)
 
-        # sidebar frame (starts hidden, will be packed on left)
+        # Sidebar (initially hidden)
         self.sidebar = ctk.CTkFrame(self.body, width=220, corner_radius=0)
 
-        # content area (always present)
+        # Content
         self.content = ctk.CTkFrame(self.body, corner_radius=0)
-        self.content.pack(side="right", fill="both", expand=True)
+        self.content.pack(side="left", fill="both", expand=True)
 
-        # pages cache
         self.pages = {}
         self.show_page("Overview")
 
+
     def build_sidebar(self):
-        """Builds sidebar buttons only once."""
         if hasattr(self, "sidebar_built") and self.sidebar_built:
             return
         self.sidebar_built = True
 
-        head = ctk.CTkLabel(
-            self.sidebar, text="Menu", font=ctk.CTkFont(size=16, weight="bold")
-        )
-        head.pack(padx=12, pady=(14, 8), anchor="w")
+        ctk.CTkLabel(self.sidebar, text="Menu", font=ctk.CTkFont(size=16, weight="bold")).pack(padx=12, pady=(14, 8), anchor="w")
 
         for name in PAGES:
-            btn = ctk.CTkButton(
-                self.sidebar,
-                text=name,
-                anchor="w",
-                command=lambda n=name: self.show_page(n),
-            )
-            btn.pack(fill="x", padx=12, pady=6)
+            ctk.CTkButton(self.sidebar, text=name, anchor="w",
+                          command=lambda n=name: self.show_page(n)).pack(fill="x", padx=12, pady=6)
+
+        # logout button at bottom
+        ctk.CTkButton(self.sidebar, text="Logout", fg_color="red", hover_color="#b30000",
+                      command=self.logout).pack(fill="x", padx=12, pady=20, side="bottom")
+
 
     def toggle_sidebar(self):
         if self.sidebar_visible:
@@ -82,46 +124,177 @@ class App(ctk.CTk):
             self.sidebar_visible = False
         else:
             self.build_sidebar()
-            # ✅ pack sidebar first so it appears on the LEFT
             self.sidebar.pack(side="left", fill="y")
             self.sidebar_visible = True
+
 
     def get_page(self, name):
         if name not in self.pages:
             if name == "Overview":
                 self.pages[name] = OverviewPage(self.content)
-            elif name == "Top Attractions":
-                self.pages[name] = TopAttractionsPage(self.content)
             else:
                 self.pages[name] = PlaceholderPage(self.content, name)
-            self.pages[name].pack(fill="both", expand=True)
         return self.pages[name]
 
+
     def show_page(self, name):
-        # clear current
         for widget in self.content.winfo_children():
             widget.pack_forget()
-        page=self.get_page(name)
+        page = self.get_page(name)
         page.pack(fill="both", expand=True)
 
-# ---- Example pages ----
+
+    def logout(self):
+        """Safely remove the main UI and return to login screen."""
+        # Destroy main UI widgets if they exist
+        for name in ("topbar", "body", "sidebar", "content"):
+            if hasattr(self, name):
+                widget = getattr(self, name)
+                try:
+                    widget.destroy()
+                except Exception:
+                    pass
+                try:
+                    delattr(self, name)
+                except Exception:
+                    pass
+
+        # Clear pages cache if present
+        if hasattr(self, "pages"):
+            try:
+                # destroy any created page frames
+                for p in list(self.pages.values()):
+                    try:
+                        p.destroy()
+                    except Exception:
+                        pass
+            except Exception:
+                pass
+            try:
+                delattr(self, "pages")
+            except Exception:
+                pass
+
+        # reset sidebar state
+        self.sidebar_visible = False
+        self.sidebar_built = False
+
+        # remove any leftover attributes that could conflict
+        for leftover in ("menu_btn", "title_lbl"):
+            if hasattr(self, leftover):
+                try:
+                    getattr(self, leftover).destroy()
+                except Exception:
+                    pass
+                try:
+                    delattr(self, leftover)
+                except Exception:
+                    pass
+
+        # Create and show login frame in the same window
+        self.login_frame = LoginFrame(self, self.on_login_success)
+        self.login_frame.pack(fill="both", expand=True)
+
+
+# ---------- LOGIN + REGISTER ----------
+class LoginFrame(ctk.CTkFrame):
+    def __init__(self, parent, on_login_success):
+        super().__init__(parent)
+        self.on_login_success = on_login_success
+        self.build_ui()
+
+    def build_ui(self):
+        ctk.CTkLabel(self, text="Welcome to Travel Guide", font=ctk.CTkFont(size=20, weight="bold")).pack(pady=(60, 20))
+        self.email_entry = ctk.CTkEntry(self, placeholder_text="Email")
+        self.email_entry.pack(pady=10)
+        self.password_entry = ctk.CTkEntry(self, placeholder_text="Password", show="*")
+        self.password_entry.pack(pady=10)
+        ctk.CTkButton(self, text="Login", command=self.login).pack(pady=10)
+        ctk.CTkButton(self, text="Register", command=self.open_register).pack(pady=5)
+        ctk.CTkButton(self, text="Continue as Guest", fg_color="gray", command=self.login_guest).pack(pady=20)
+        self.message = ctk.CTkLabel(self, text="", text_color="red")
+        self.message.pack()
+
+    def login(self):
+        email = self.email_entry.get().strip()
+        password = self.password_entry.get().strip()
+        if not email or not password:
+            self.message.configure(text="Please fill all fields")
+            return
+
+        conn = sqlite3.connect(DB_PATH)
+        cur = conn.cursor()
+        cur.execute("SELECT password FROM users WHERE email=?", (email,))
+        result = cur.fetchone()
+        conn.close()
+
+        if result and result[0] == hash_password(password):
+            self.on_login_success(email, is_guest=False)
+        else:
+            self.message.configure(text="Invalid email or password")
+
+    def login_guest(self):
+        self.on_login_success("guest", is_guest=True)
+
+    def open_register(self):
+        self.destroy()
+        RegisterFrame(self.master, self.on_login_success).pack(fill="both", expand=True)
+
+
+class RegisterFrame(ctk.CTkFrame):
+    def __init__(self, parent, on_login_success):
+        super().__init__(parent)
+        self.on_login_success = on_login_success
+        self.build_ui()
+
+    def build_ui(self):
+        ctk.CTkLabel(self, text="Register New Account", font=ctk.CTkFont(size=20, weight="bold")).pack(pady=(60, 20))
+        self.name_entry = ctk.CTkEntry(self, placeholder_text="Full Name")
+        self.name_entry.pack(pady=10)
+        self.email_entry = ctk.CTkEntry(self, placeholder_text="Email")
+        self.email_entry.pack(pady=10)
+        self.password_entry = ctk.CTkEntry(self, placeholder_text="Password", show="*")
+        self.password_entry.pack(pady=10)
+        ctk.CTkButton(self, text="Create Account", command=self.register).pack(pady=10)
+        ctk.CTkButton(self, text="Back to Login", command=self.back_to_login).pack(pady=5)
+        self.message = ctk.CTkLabel(self, text="", text_color="red")
+        self.message.pack()
+
+    def register(self):
+        name = self.name_entry.get().strip()
+        email = self.email_entry.get().strip()
+        password = self.password_entry.get().strip()
+        if not name or not email or not password:
+            self.message.configure(text="All fields are required")
+            return
+
+        conn = sqlite3.connect(DB_PATH)
+        cur = conn.cursor()
+        try:
+            cur.execute("INSERT INTO users VALUES (?, ?, ?)", (email, name, hash_password(password)))
+            conn.commit()
+            self.message.configure(text="Registration successful!", text_color="green")
+        except sqlite3.IntegrityError:
+            self.message.configure(text="Email already registered")
+        conn.close()
+
+    def back_to_login(self):
+        self.destroy()
+        LoginFrame(self.master, self.on_login_success).pack(fill="both", expand=True)
+
+
+# ---------- PAGES ----------
 class OverviewPage(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent)
-        ctk.CTkLabel(
-            self,
-            text="Welcome to the Travel Guide!",
-            font=ctk.CTkFont(size=22, weight="bold"),
-        ).pack(pady=30)
+        ctk.CTkLabel(self, text="Welcome to the Travel Guide!", font=ctk.CTkFont(size=22, weight="bold")).pack(pady=30)
         ctk.CTkLabel(self, text="Click ☰ to open the menu").pack(pady=10)
-
 
 class PlaceholderPage(ctk.CTkFrame):
     def __init__(self, parent, name):
         super().__init__(parent)
-        ctk.CTkLabel(
-            self, text=f"{name} page coming soon…", font=ctk.CTkFont(size=18)
-        ).pack(pady=40)
+        ctk.CTkLabel(self, text=f"{name} page coming soon…", font=ctk.CTkFont(size=18)).pack(pady=40)
+
 
 class TopAttractionsPage(ctk.CTkScrollableFrame):
     def __init__(self, parent):
@@ -139,17 +312,25 @@ class TopAttractionsPage(ctk.CTkScrollableFrame):
             ("Ahsan Manzil", "Historic palace in Dhaka.", "assets/images/ahsanmanjil.jpg"),
         ]
 
-        self.images = []  # keep references
+        self.images = []  # keep references to CTkImages
 
         for name, desc, img_path in attractions:
             img = Image.open(img_path)
 
+            # create frame with a fixed min height
             frame = ctk.CTkFrame(self, corner_radius=8)
             frame.pack(fill="x", padx=20, pady=10)
+            frame.update_idletasks()  # force geometry update
+            min_height = 200
+            frame.configure(height=min_height)
 
-            # background image label
-            bg_label = ctk.CTkLabel(frame, text="")
+            # initial CTkImage (scaled)
+            ctk_img = ctk.CTkImage(light_image=img, dark_image=img, size=(800, min_height))
+
+            # background label
+            bg_label = ctk.CTkLabel(frame, image=ctk_img, text="")
             bg_label.place(relx=0, rely=0, relwidth=1, relheight=1)
+            self.images.append(ctk_img)
 
             # overlay title
             title_label = ctk.CTkLabel(frame, text=name, font=ctk.CTkFont(size=18, weight="bold"))
@@ -159,20 +340,22 @@ class TopAttractionsPage(ctk.CTkScrollableFrame):
             desc_label = ctk.CTkLabel(frame, text=desc, wraplength=500, justify="left")
             desc_label.place(relx=0.05, rely=0.25, anchor="nw")
 
-            def resize_image(event, bg=bg_label, pil_img=img):
-                new_width = event.width
-                new_height = int(event.height)   # scale fully with frame
+            # resize event
+            def resize_image(event, bg=bg_label, pil_img=img, desc_lbl=desc_label):
+                new_width = max(event.width, 100)
+                new_height = max(event.height, 100)
                 resized_img = pil_img.resize((new_width, new_height), Image.LANCZOS)
                 ctk_img = ctk.CTkImage(light_image=resized_img, dark_image=resized_img, size=(new_width, new_height))
                 bg.configure(image=ctk_img)
-                bg.image = ctk_img  # keep reference
-
-                # also resize text wraplength with frame
-                desc_label.configure(wraplength=int(new_width * 0.9))
+                bg.image = ctk_img
+                desc_lbl.configure(wraplength=int(new_width * 0.9))
 
             frame.bind("<Configure>", resize_image)
 
 
+
+
+# ---------- RUN APP ----------
 if __name__ == "__main__":
     app = App()
     app.mainloop()
