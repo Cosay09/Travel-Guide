@@ -156,6 +156,8 @@ class App(ctk.CTk):
         if name not in self.pages:
             if name == "Overview":
                 self.pages[name] = OverviewPage(self.content)
+            elif name == "Top Attractions":
+                self.pages[name] = TopAttractionsPage(self.content)
             else:
                 self.pages[name] = PlaceholderPage(self.content, name)
             self.pages[name].pack(fill="both", expand=True)
