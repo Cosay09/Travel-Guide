@@ -1,0 +1,86 @@
+[
+  {
+    "slug": "coxsbazar-beach",
+    "name": "Cox's Bazar Beach",
+    "image": "assets/images/coxsbazar.jpg",
+    "location": "Cox's Bazar, Chattogram",
+    "content_file": "content/coxsbazar.md"
+  },
+  {
+    "slug": "saint-martins-island",
+    "name": "Saint Martin's Island",
+    "image": "assets/images/saint_martin.jpg",
+    "location": "Teknaf, Cox's Bazar",
+    "content_file": "content/saint_martin.md"
+  },
+  {
+    "slug": "sundarbans",
+    "name": "Sundarbans",
+    "image": "assets/images/sundarban.jpg",
+    "location": "Khulna & Satkhira",
+    "content_file": "content/sundarbans.md"
+  },
+  {
+    "slug": "sajek-valley",
+    "name": "Sajek Valley",
+    "image": "assets/images/sajek_valley.jpg",
+    "location": "Rangamati Hill District",
+    "content_file": "content/sajek_valley.md"
+  },
+  {
+    "slug": "ahsan-manzil",
+    "name": "Ahsan Manzil",
+    "image": "assets/images/ahsanmanjil.jpg",
+    "location": "Old Dhaka",
+    "content_file": "content/ahsan_manzil.md"
+  },
+  {
+    "slug": "sukhiya-valley",
+    "name": "Sukhiya Valley",
+    "image": "assets/images/sukhiya_valley.jpg",
+    "location": "Sylhet",
+    "content_file": "content/sukhiya_valley.md"
+  },
+  {
+    "slug": "kaptai-lake",
+    "name": "Kaptai Lake",
+    "image": "assets/images/kaptai_lake.jpg",
+    "location": "Rangamati",
+    "content_file": "content/kaptai_lake.md"
+  },
+  {
+    "slug": "jaflong",
+    "name": "Jaflong",
+    "image": "assets/images/jaflong.jpg",
+    "location": "Sylhet",
+    "content_file": "content/jaflong.md"
+  },
+  {
+    "slug": "langlok-waterfall",
+    "name": "Langlok Waterfall",
+    "image": "assets/images/langlok_waterfall.jpg",
+    "location": "Chattogram Hill Tracts",
+    "content_file": "content/langlok_waterfall.md"
+  },
+  {
+    "slug": "bholaganj",
+    "name": "Bholaganj",
+    "image": "assets/images/bholaganj.jpg",
+    "location": "Sylhet",
+    "content_file": "content/bholaganj.md"
+  },
+  {
+    "slug": "tanguar-haor",
+    "name": "Tanguar Haor",
+    "image": "assets/images/tanguar_haor.jpg",
+    "location": "Sunamganj",
+    "content_file": "content/tanguar_haor.md"
+  },
+  {
+    "slug": "as-salam-jame-mosque",
+    "name": "As-Salam Jame Mosque",
+    "image": "assets/images/as_salam_jame_mosque.jpg",
+    "location": "Dhaka",
+    "content_file": "content/as_salam_jame_mosque.md"
+  }
+]
