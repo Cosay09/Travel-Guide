@@ -132,7 +132,7 @@ class App(ctk.CTk):
         self.body.grid_columnconfigure(1, weight=1)   # content column expands
 
         # Sidebar (initially created but hidden)
-        self.sidebar = ctk.CTkFrame(self.body, width=220, corner_radius=0)
+        self.sidebar = ctk.CTkScrollableFrame(self.body, width=220, corner_radius=0, fg_color="#0F172A")
 
         # Content (always present)
         self.content = ctk.CTkFrame(self.body, corner_radius=0)
@@ -142,30 +142,100 @@ class App(ctk.CTk):
         self.show_page("Overview")  # show default page
 
     def build_sidebar(self):
-        if hasattr(self, "sidebar_built") and self.sidebar_built:
+        if getattr(self, "sidebar_built", False):
             return
         self.sidebar_built = True
 
+        self.sidebar_buttons = {}
+
+        # ----- Header (app title + user) -----
+        header = ctk.CTkFrame(self.sidebar, fg_color="transparent")
+        header.pack(fill="x", padx=12, pady=(14, 8))
+
         ctk.CTkLabel(
-            self.sidebar, text="Menu", font=ctk.CTkFont(size=16, weight="bold")
-        ).pack(padx=12, pady=(14, 8), anchor="w")
+            header,
+            text="🌍 Travel Guide",
+            font=ctk.CTkFont(size=18, weight="bold"),
+            text_color="white",
+        ).pack(anchor="w")
 
+        ctk.CTkLabel(
+            header,
+            text=f"Signed in as: {'Guest' if self.is_guest else self.user_email}",
+            font=ctk.CTkFont(size=11),
+            text_color="#9CA3AF",
+        ).pack(anchor="w", pady=(2, 0))
+
+        # separator line
+        ctk.CTkFrame(
+            self.sidebar, height=1, fg_color="#1F2937", corner_radius=0
+        ).pack(fill="x", padx=12, pady=(4, 8))
+
+        # icons per page
+        page_icons = {
+            "Overview": "🏠",
+            "Top Attractions": "📍",
+            "Itineraries": "🗓",
+            "Local Transportation": "🚆",
+            "Accommodation": "🏨",
+            "Food & Drink": "🍛",
+            "Practical Info": "ℹ",
+            "Maps & Visuals": "🗺",
+            "Day Trips & Hidden Gems": "✨",
+        }
+
+        # ----- Menu buttons -----
         for name in PAGES:
-            ctk.CTkButton(
+            icon = page_icons.get(name, "📄")
+            btn = ctk.CTkButton(
                 self.sidebar,
-                text=name,
+                text=f"{icon}  {name}",
                 anchor="w",
-                command=lambda n=name, app=self: app.show_page(n)
-            ).pack(fill="x", padx=12, pady=6)
+                height=36,
+                corner_radius=8,
+                fg_color="transparent",
+                hover_color="#1E293B",
+                text_color="#E5E7EB",
+                font=ctk.CTkFont(size=13),
+                command=lambda n=name: self.show_page(n),
+            )
+            btn.pack(fill="x", padx=12, pady=3)
+            self.sidebar_buttons[name] = btn
 
-        # logout button at bottom
+        # ❌ no spacer here anymore
+
+        # ----- Logout button directly after last option -----
         ctk.CTkButton(
             self.sidebar,
-            text="Logout",
-            fg_color="red",
-            hover_color="#b30000",
-            command=self.logout
-        ).pack(fill="x", padx=12, pady=20, side="bottom")
+            text="⏏  Logout",
+            fg_color="#DC2626",
+            hover_color="#B91C1C",
+            text_color="white",
+            height=34,
+            corner_radius=8,
+            command=self.logout,
+        ).pack(fill="x", padx=12, pady=(10, 16))
+
+
+
+    def highlight_sidebar(self, active_name: str):
+        """Visually highlight the active page button."""
+        if not hasattr(self, "sidebar_buttons"):
+            return
+
+        for name, btn in self.sidebar_buttons.items():
+            if name == active_name:
+                btn.configure(
+                    fg_color="#2563EB",      # blue highlight
+                    text_color="white",
+                )
+            else:
+                btn.configure(
+                    fg_color="transparent",
+                    text_color="#E5E7EB",
+                )
+
+
 
     def toggle_sidebar(self):
         if self.sidebar_visible:
@@ -195,7 +265,7 @@ class App(ctk.CTk):
         return self.pages[name]
 
     def show_page(self, name):
-        # Hide all current widgets in content frame
+        # Clear old widgets from the content frame
         for widget in self.content.winfo_children():
             widget.grid_remove()
 
@@ -205,6 +275,11 @@ class App(ctk.CTk):
         # Make sure the page expands with the content area
         self.content.grid_rowconfigure(0, weight=1)
         self.content.grid_columnconfigure(0, weight=1)
+
+        # highlight active button in sidebar (if built)
+        if getattr(self, "sidebar_built", False):
+            self.highlight_sidebar(name)
+
 
     def show_attraction_page(self, attraction):
         """Show full-page attraction detail inside main content area."""
@@ -277,53 +352,171 @@ class App(ctk.CTk):
         self.login_frame.pack(fill="both", expand=True)
 
 
-# ---------- LOGIN + REGISTER ----------
 class LoginFrame(ctk.CTkFrame):
     def __init__(self, parent, on_login_success):
         super().__init__(parent)
         self.on_login_success = on_login_success
+        self.configure(fg_color="#E5E7EB")  # soft gray background
         self.build_ui()
 
     def build_ui(self):
-        ctk.CTkLabel(
-            self,
-            text="Welcome to Travel Guide",
-            font=ctk.CTkFont(size=24, weight="bold")
-        ).pack(pady=(60, 20))
+        # ===== Main 2-column layout =====
+        container = ctk.CTkFrame(self, fg_color="transparent")
+        container.pack(fill="both", expand=True, padx=20, pady=20)
 
-        self.email_entry = ctk.CTkEntry(
-            self,
-            placeholder_text="Email",
-            width=300,
-            font=ctk.CTkFont(size=16)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=3)
+        container.grid_columnconfigure(1, weight=4)
+
+        # ---------- LEFT: Hero / branding ----------
+        left = ctk.CTkFrame(
+            container,
+            corner_radius=20,
+            fg_color="#0F172A"
         )
-        self.email_entry.pack(pady=10)
+        left.grid(row=0, column=0, sticky="nsew", padx=(0, 10), pady=0)
 
+        ctk.CTkLabel(
+            left,
+            text="🌍 Travel Guide",
+            font=ctk.CTkFont(size=26, weight="bold"),
+            text_color="white"
+        ).pack(anchor="w", padx=24, pady=(24, 8))
+
+        ctk.CTkLabel(
+            left,
+            text="Discover beaches, hills, heritage sites\nand hidden gems across Bangladesh.",
+            font=ctk.CTkFont(size=14),
+            text_color="#E5E7EB",
+            justify="left"
+        ).pack(anchor="w", padx=24, pady=(0, 16))
+
+        # Little feature bullets
+        bullet_frame = ctk.CTkFrame(left, fg_color="transparent")
+        bullet_frame.pack(anchor="w", padx=20, pady=(0, 20))
+
+        def bullet(text):
+            row = ctk.CTkFrame(bullet_frame, fg_color="transparent")
+            row.pack(anchor="w", pady=2)
+            ctk.CTkLabel(
+                row,
+                text="•",
+                font=ctk.CTkFont(size=16, weight="bold"),
+                text_color="#38BDF8",
+                width=10
+            ).pack(side="left")
+            ctk.CTkLabel(
+                row,
+                text=text,
+                font=ctk.CTkFont(size=12),
+                text_color="#E5E7EB",
+                justify="left"
+            ).pack(side="left")
+
+        bullet("Save time with curated top attractions.")
+        bullet("Plan trips with itineraries and local tips.")
+        bullet("All your info in one simple interface.")
+
+        ctk.CTkLabel(
+            left,
+            text="Log in or continue as guest\nto start exploring.",
+            font=ctk.CTkFont(size=12),
+            text_color="#9CA3AF",
+            justify="left"
+        ).pack(anchor="w", padx=24, pady=(0, 20))
+
+        # ---------- RIGHT: Login card ----------
+        right = ctk.CTkFrame(
+            container,
+            corner_radius=20,
+            fg_color="#FFFFFF"
+        )
+        right.grid(row=0, column=1, sticky="nsew", padx=(10, 0), pady=0)
+
+        # Inner padding frame
+        inner = ctk.CTkFrame(right, fg_color="transparent")
+        inner.pack(fill="both", expand=True, padx=26, pady=26)
+
+        ctk.CTkLabel(
+            inner,
+            text="Welcome back",
+            font=ctk.CTkFont(size=22, weight="bold"),
+            text_color="#111827"
+        ).pack(anchor="w", pady=(0, 4))
+
+        ctk.CTkLabel(
+            inner,
+            text="Sign in to continue planning your journey.",
+            font=ctk.CTkFont(size=13),
+            text_color="#6B7280"
+        ).pack(anchor="w", pady=(0, 14))
+
+        # Email entry
+        self.email_entry = ctk.CTkEntry(
+            inner,
+            placeholder_text="Email address",
+            width=320,
+            font=ctk.CTkFont(size=14)
+        )
+        self.email_entry.pack(pady=(8, 8))
+
+        # Password entry
         self.password_entry = ctk.CTkEntry(
-            self,
+            inner,
             placeholder_text="Password",
             show="*",
-            width=300,
-            font=ctk.CTkFont(size=16)
+            width=320,
+            font=ctk.CTkFont(size=14)
         )
-        self.password_entry.pack(pady=10)
+        self.password_entry.pack(pady=(0, 4))
 
-        # Bind Enter key to trigger login
+        # Bind Enter to login
         self.email_entry.bind("<Return>", lambda event: self.login())
         self.password_entry.bind("<Return>", lambda event: self.login())
 
-        ctk.CTkButton(self, text="Login", command=self.login).pack(pady=10)
-        ctk.CTkButton(self, text="Register", command=self.open_register).pack(pady=5)
+        # Small hint under password
+        ctk.CTkLabel(
+            inner,
+            text="Use the same account to access your saved plans later.",
+            font=ctk.CTkFont(size=11),
+            text_color="#9CA3AF"
+        ).pack(anchor="w", pady=(0, 10))
+
+        # Buttons
         ctk.CTkButton(
-            self,
+            inner,
+            text="Log in",
+            height=36,
+            fg_color="#2563EB",
+            hover_color="#1D4ED8",
+            command=self.login
+        ).pack(fill="x", pady=(4, 6))
+
+        ctk.CTkButton(
+            inner,
+            text="Create a new account",
+            height=32,
+            fg_color="#F3F4F6",
+            hover_color="#E5E7EB",
+            text_color="#111827",
+            command=self.open_register
+        ).pack(fill="x", pady=(0, 10))
+
+        ctk.CTkButton(
+            inner,
             text="Continue as Guest",
-            fg_color="gray",
+            height=32,
+            fg_color="#111827",
+            hover_color="#020617",
+            text_color="white",
             command=self.login_guest
-        ).pack(pady=20)
+        ).pack(fill="x", pady=(0, 10))
 
-        self.message = ctk.CTkLabel(self, text="", text_color="red")
-        self.message.pack()
+        # Message label for errors
+        self.message = ctk.CTkLabel(inner, text="", text_color="red")
+        self.message.pack(anchor="w", pady=(4, 0))
 
+    # ==== logic stays exactly the same ====
     def login(self):
         email = self.email_entry.get().strip()
         password = self.password_entry.get().strip()
@@ -371,36 +564,169 @@ class RegisterFrame(ctk.CTkFrame):
     def __init__(self, parent, on_login_success):
         super().__init__(parent)
         self.on_login_success = on_login_success
+        self.configure(fg_color="#E5E7EB")  # same soft bg as login
+        self.show_password = False
         self.build_ui()
 
     def build_ui(self):
+        container = ctk.CTkFrame(self, fg_color="transparent")
+        container.pack(fill="both", expand=True, padx=20, pady=20)
+
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
+
+        # Center card
+        card = ctk.CTkFrame(
+            container,
+            corner_radius=20,
+            fg_color="#FFFFFF",
+        )
+        card.grid(row=0, column=0, sticky="nsew", padx=80, pady=20)
+
+        inner = ctk.CTkFrame(card, fg_color="transparent")
+        inner.pack(fill="both", expand=True, padx=26, pady=26)
+
+        # Use a clean grid inside the card
+        inner.grid_columnconfigure(0, weight=1)
+
+        row = 0
+
+        # ----- Title -----
         ctk.CTkLabel(
-            self,
-            text="Register New Account",
-            font=ctk.CTkFont(size=20, weight="bold")
-        ).pack(pady=(60, 20))
+            inner,
+            text="Create a new account",
+            font=ctk.CTkFont(size=22, weight="bold"),
+            text_color="#111827",
+        ).grid(row=row, column=0, sticky="w", pady=(0, 4))
+        row += 1
 
-        self.name_entry = ctk.CTkEntry(self, placeholder_text="Full Name")
-        self.name_entry.pack(pady=10)
+        ctk.CTkLabel(
+            inner,
+            text="Sign up to save your plans and come back to them anytime.",
+            font=ctk.CTkFont(size=13),
+            text_color="#6B7280",
+        ).grid(row=row, column=0, sticky="w", pady=(0, 16))
+        row += 1
 
-        self.email_entry = ctk.CTkEntry(self, placeholder_text="Email")
-        self.email_entry.pack(pady=10)
+        # ----- Full name -----
+        self.name_entry = ctk.CTkEntry(
+            inner,
+            placeholder_text="Full name",
+            width=320,
+            font=ctk.CTkFont(size=14),
+        )
+        self.name_entry.grid(row=row, column=0, sticky="ew", pady=(4, 8))
+        row += 1
 
-        self.password_entry = ctk.CTkEntry(self, placeholder_text="Password", show="*")
-        self.password_entry.pack(pady=10)
+        # ----- Email -----
+        self.email_entry = ctk.CTkEntry(
+            inner,
+            placeholder_text="Email address",
+            width=320,
+            font=ctk.CTkFont(size=14),
+        )
+        self.email_entry.grid(row=row, column=0, sticky="ew", pady=(0, 8))
+        row += 1
 
-        ctk.CTkButton(self, text="Create Account", command=self.register).pack(pady=10)
-        ctk.CTkButton(self, text="Back to Login", command=self.back_to_login).pack(pady=5)
+        # ----- Password row: entry + toggle, aligned with others -----
+        pass_row = ctk.CTkFrame(inner, fg_color="transparent")
+        pass_row.grid(row=row, column=0, sticky="ew", pady=(0, 4))
+        pass_row.grid_columnconfigure(0, weight=1)
+        pass_row.grid_columnconfigure(1, weight=0)
 
-        self.message = ctk.CTkLabel(self, text="", text_color="red")
-        self.message.pack()
+        self.password_entry = ctk.CTkEntry(
+            pass_row,
+            placeholder_text="Password",
+            show="*",
+            font=ctk.CTkFont(size=14),
+        )
+        self.password_entry.grid(row=0, column=0, sticky="ew")
+
+        self.toggle_btn = ctk.CTkButton(
+            pass_row,
+            text="Show",
+            width=60,
+            height=30,
+            fg_color="#E5E7EB",
+            hover_color="#D1D5DB",
+            text_color="#111827",
+            command=self.toggle_password_visibility,
+        )
+        self.toggle_btn.grid(row=0, column=1, padx=(6, 0))
+
+        row += 1
+
+        # ----- Confirm password -----
+        self.confirm_entry = ctk.CTkEntry(
+            inner,
+            placeholder_text="Confirm password",
+            show="*",
+            width=320,
+            font=ctk.CTkFont(size=14),
+        )
+        self.confirm_entry.grid(row=row, column=0, sticky="ew", pady=(4, 6))
+        row += 1
+
+        # ----- Hint -----
+        ctk.CTkLabel(
+            inner,
+            text="Use at least 6 characters. Passwords must match.",
+            font=ctk.CTkFont(size=11),
+            text_color="#9CA3AF",
+        ).grid(row=row, column=0, sticky="w", pady=(0, 10))
+        row += 1
+
+        # ----- Create account button -----
+        ctk.CTkButton(
+            inner,
+            text="Create account",
+            height=36,
+            fg_color="#16A34A",
+            hover_color="#15803D",
+            text_color="white",
+            command=self.register,
+        ).grid(row=row, column=0, sticky="ew", pady=(4, 8))
+        row += 1
+
+        # ----- Back to login -----
+        ctk.CTkButton(
+            inner,
+            text="← Back to login",
+            height=32,
+            fg_color="#F3F4F6",
+            hover_color="#E5E7EB",
+            text_color="#111827",
+            command=self.back_to_login,
+        ).grid(row=row, column=0, sticky="ew")
+        row += 1
+
+        # ----- Message label (errors / success) -----
+        self.message = ctk.CTkLabel(inner, text="", text_color="red")
+        self.message.grid(row=row, column=0, sticky="w", pady=(8, 0))
+
+    def toggle_password_visibility(self):
+        self.show_password = not self.show_password
+        char = "" if self.show_password else "*"
+        self.password_entry.configure(show=char)
+        self.confirm_entry.configure(show=char)
+        self.toggle_btn.configure(text="Hide" if self.show_password else "Show")
 
     def register(self):
         name = self.name_entry.get().strip()
         email = self.email_entry.get().strip()
         password = self.password_entry.get().strip()
-        if not name or not email or not password:
-            self.message.configure(text="All fields are required")
+        confirm = self.confirm_entry.get().strip()
+
+        if not name or not email or not password or not confirm:
+            self.message.configure(text="All fields are required", text_color="red")
+            return
+
+        if len(password) < 6:
+            self.message.configure(text="Password must be at least 6 characters", text_color="red")
+            return
+
+        if password != confirm:
+            self.message.configure(text="Passwords do not match", text_color="red")
             return
 
         conn = sqlite3.connect(DB_PATH)
@@ -408,17 +734,24 @@ class RegisterFrame(ctk.CTkFrame):
         try:
             cur.execute(
                 "INSERT INTO users VALUES (?, ?, ?)",
-                (email, name, hash_password(password))
+                (email, name, hash_password(password)),
             )
             conn.commit()
-            self.message.configure(text="Registration successful!", text_color="green")
+            self.message.configure(
+                text="Registration successful! You can log in now.",
+                text_color="green",
+            )
         except sqlite3.IntegrityError:
-            self.message.configure(text="Email already registered")
-        conn.close()
+            self.message.configure(text="Email already registered", text_color="red")
+        finally:
+            conn.close()
 
     def back_to_login(self):
         self.destroy()
         LoginFrame(self.master, self.on_login_success).pack(fill="both", expand=True)
+
+
+
 
 
 class OverviewPage(ctk.CTkFrame):
