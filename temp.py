@@ -632,9 +632,9 @@ class OverviewPage(ctk.CTkFrame):
 
 
 
-class TopAttractionsPage(FastScrollableFrame):
+class TopAttractionsPage(FastScrollableFrame):  # or ctk.CTkScrollableFrame
     def __init__(self, parent):
-        super().__init__(parent, scroll_speed=4)
+        super().__init__(parent, scroll_speed=4)   # if using FastScrollableFrame
 
         # ===== Header section =====
         header = ctk.CTkFrame(self, fg_color="#0078D4", corner_radius=0)
@@ -662,17 +662,21 @@ class TopAttractionsPage(FastScrollableFrame):
         grid_frame = ctk.CTkFrame(container, fg_color="transparent")
         grid_frame.pack(padx=20, pady=20)
 
+        # 👉 3 columns now
         grid_frame.grid_columnconfigure(0, weight=1, uniform="col")
         grid_frame.grid_columnconfigure(1, weight=1, uniform="col")
+        grid_frame.grid_columnconfigure(2, weight=1, uniform="col")
 
         for idx, attraction in enumerate(self.attractions):
-            row, col = divmod(idx, 2)
+            row = idx // 3
+            col = idx % 3
             self.create_card(grid_frame, attraction, row, col)
 
     def create_card(self, parent, attraction, row, col):
-        CARD_W, CARD_H = 380, 230
-        IMG_W, IMG_H = 380, 230
-        ZOOM_W, ZOOM_H = 420, 260
+        # Smaller size so 3 fit in a 1000px window
+        CARD_W, CARD_H = 300, 200
+        IMG_W, IMG_H = 300, 200
+        ZOOM_W, ZOOM_H = 330, 220
 
         # ----- Card container -----
         card = ctk.CTkFrame(
@@ -682,7 +686,7 @@ class TopAttractionsPage(FastScrollableFrame):
             corner_radius=18,
             fg_color="#FFFFFF",
         )
-        card.grid(row=row, column=col, padx=12, pady=12, sticky="nsew")
+        card.grid(row=row, column=col, padx=10, pady=10, sticky="nsew")
         card.grid_propagate(False)
 
         # Image label (centered)
@@ -692,38 +696,31 @@ class TopAttractionsPage(FastScrollableFrame):
         normal = zoom = None
         try:
             img = Image.open(attraction.get("image", ""))
-            normal = ctk.CTkImage(img, size=(IMG_W, IMG_H))
-            zoom = ctk.CTkImage(img, size=(ZOOM_W, ZOOM_H))
+            normal = ctk.CTkImage(light_image=img, dark_image=img, size=(IMG_W, IMG_H))
+            zoom = ctk.CTkImage(light_image=img, dark_image=img, size=(ZOOM_W, ZOOM_H))
             self.image_cache.append((normal, zoom))
             img_label.configure(image=normal)
         except Exception:
             img_label.configure(text="Image Missing", text_color="red")
 
-        # ----- Name pill at bottom-left -----
+        # ----- Name bar at bottom-left (no rounded corners) -----
         name_text = attraction.get("name", "Unknown")
 
-        pill = ctk.CTkFrame(
-            card,
-            fg_color="#0F172A",     # dark background
-            corner_radius=999,      # very round pill
-        )
-        pill.place(relx=0.02, rely=0.97, anchor="sw")
-
         name_label = ctk.CTkLabel(
-            pill,
-            text=name_text,
-            font=ctk.CTkFont(size=15, weight="bold"),
+            card,
+            text=f"  {name_text}  ",
+            font=ctk.CTkFont(size=13, weight="bold"),
             text_color="white",
-            fg_color="transparent",   # no extra box, just text
+            fg_color="#0F172A",    # solid dark bar
+            corner_radius=0,       # 👈 no rounded corners → no white bits
         )
-        name_label.pack(padx=8, pady=3)
-
+        name_label.place(relx=0.02, rely=0.97, anchor="sw")
 
         # ----- Hover effects -----
         def on_enter(event=None):
             if zoom is not None:
                 img_label.configure(image=zoom)
-            card.configure(border_width=3, border_color="#0078D4")
+            card.configure(border_width=2, border_color="#0078D4")
             card.configure(cursor="hand2")
 
         def on_leave(event=None):
@@ -741,6 +738,7 @@ class TopAttractionsPage(FastScrollableFrame):
             w.bind("<Enter>", on_enter)
             w.bind("<Leave>", on_leave)
             w.bind("<Button-1>", on_click)
+
 
 
 
