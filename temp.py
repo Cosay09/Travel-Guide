@@ -5,12 +5,13 @@ import os
 import json
 from PIL import Image
 
-# ---------- PATHS ----------
+
+
 DB_PATH = "data/users.db"
 ATTRACTIONS_PATH = "data/attractions.json"
 
 
-# ---------- DATABASE SETUP ----------
+
 def init_db():
     os.makedirs("data", exist_ok=True)
     conn = sqlite3.connect(DB_PATH)
@@ -26,11 +27,12 @@ def init_db():
     conn.close()
 
 
+
 def hash_password(password: str) -> str:
     return hashlib.sha256(password.encode()).hexdigest()
 
 
-# ---------- ATTRACTIONS DATA ----------
+
 def load_attractions():
     """Load attractions list from JSON file."""
     try:
@@ -47,6 +49,7 @@ def load_attractions():
         return []
 
 
+
 def load_content_from_file(path: str) -> str:
     """Load long text/blog content from .md or .txt file."""
     try:
@@ -58,7 +61,7 @@ def load_content_from_file(path: str) -> str:
         return f"⚠ Error loading content from {path}: {e}"
 
 
-# ---------- MAIN APP ----------
+
 PAGES = (
     "Overview",
     "Top Attractions",
@@ -72,12 +75,15 @@ PAGES = (
 )
 
 
+
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("Travel Guide")
-        self.geometry("1000x600")
-        self.resizable(False, False)
+        self.geometry("1280x720")  # Good starting size
+        self.minsize(1150, 650)    # Prevent layout collapse
+        self.resizable(True, True) # Smooth resizing allowed
+
 
         ctk.set_appearance_mode("light")   # "dark" or "light"
         ctk.set_default_color_theme("blue")
@@ -226,7 +232,7 @@ class App(ctk.CTk):
         for name, btn in self.sidebar_buttons.items():
             if name == active_name:
                 btn.configure(
-                    fg_color="#2563EB",      # blue highlight
+                    fg_color="#2563EB",
                     text_color="white",
                 )
             else:
@@ -292,7 +298,7 @@ class App(ctk.CTk):
             widget.grid_remove()
 
         # Create a fresh detail page (not cached)
-        detail_page = AttractionDetailPage(
+        detail_page = AttractionDetailPageBrochure(
             self.content,
             attraction,
             go_back_callback=lambda: self.show_page("Top Attractions")
@@ -350,6 +356,7 @@ class App(ctk.CTk):
         # Create and show login frame in the same window
         self.login_frame = LoginFrame(self, self.on_login_success)
         self.login_frame.pack(fill="both", expand=True)
+
 
 
 class LoginFrame(ctk.CTkFrame):
@@ -543,6 +550,7 @@ class LoginFrame(ctk.CTkFrame):
         RegisterFrame(self.master, self.on_login_success).pack(fill="both", expand=True)
 
 
+
 class FastScrollableFrame(ctk.CTkScrollableFrame):
     def __init__(self, master=None, scroll_speed: int = 3, **kwargs):
         """
@@ -558,6 +566,7 @@ class FastScrollableFrame(ctk.CTkScrollableFrame):
         if event.delta != 0:
             steps = int(-event.delta / 120 * self._scroll_speed)
             self._parent_canvas.yview_scroll(steps, "units")
+
 
 
 class RegisterFrame(ctk.CTkFrame):
@@ -749,8 +758,6 @@ class RegisterFrame(ctk.CTkFrame):
     def back_to_login(self):
         self.destroy()
         LoginFrame(self.master, self.on_login_success).pack(fill="both", expand=True)
-
-
 
 
 
@@ -964,7 +971,6 @@ class OverviewPage(ctk.CTkFrame):
 
 
 
-
 class TopAttractionsPage(FastScrollableFrame):  # or ctk.CTkScrollableFrame
     def __init__(self, parent):
         super().__init__(parent, scroll_speed=4)   # if using FastScrollableFrame
@@ -1134,6 +1140,380 @@ class AttractionDetailPage(ctk.CTkFrame):
         # Last fallback
         return self.attraction.get("summary") or "No description available."
     
+
+class AttractionDetailPageBrochure(ctk.CTkFrame):
+    def __init__(self, parent, attraction, go_back_callback):
+        super().__init__(parent)
+        self.attraction = attraction
+        self.go_back = go_back_callback
+
+        # ===== Hero section (image + title) =====
+        hero = ctk.CTkFrame(self, fg_color="#0F172A")
+        hero.pack(fill="x", padx=0, pady=0)
+
+        hero.grid_columnconfigure(0, weight=1)
+        hero.grid_columnconfigure(1, weight=1)
+
+        # Left: image (if available)
+        img_frame = ctk.CTkFrame(hero, fg_color="transparent")
+        img_frame.grid(row=0, column=0, sticky="nsew", padx=20, pady=16)
+
+        img_label = ctk.CTkLabel(img_frame, text="")
+        img_label.pack(fill="both", expand=True)
+
+        try:
+            img = Image.open(attraction.get("image", ""))
+            ctk_img = ctk.CTkImage(light_image=img, dark_image=img, size=(400, 220))
+            img_label.configure(image=ctk_img)
+            self._hero_image = ctk_img  # keep ref so it doesn't get GC'd
+        except Exception:
+            img_label.configure(text="No image", text_color="white")
+
+        # Right: title + location + back button
+        info_frame = ctk.CTkFrame(hero, fg_color="transparent")
+        info_frame.grid(row=0, column=1, sticky="nsew", padx=20, pady=16)
+        info_frame.grid_rowconfigure(0, weight=1)
+
+        ctk.CTkLabel(
+            info_frame,
+            text=attraction.get("name", "Details"),
+            font=ctk.CTkFont(size=24, weight="bold"),
+            text_color="white",
+        ).pack(anchor="w", pady=(0, 6))
+
+        ctk.CTkLabel(
+            info_frame,
+            text=f"📍 {attraction.get('location', 'Location not specified')}",
+            font=ctk.CTkFont(size=14),
+            text_color="#E5E7EB",
+        ).pack(anchor="w", pady=(0, 10))
+
+        ctk.CTkLabel(
+            info_frame,
+            text="Browse detailed info, travel tips, and nearby highlights.",
+            font=ctk.CTkFont(size=12),
+            text_color="#CBD5F5",
+            wraplength=360,
+        ).pack(anchor="w", pady=(0, 14))
+
+        ctk.CTkButton(
+            info_frame,
+            text="← Back to Top Attractions",
+            width=200,
+            height=32,
+            fg_color="#1D4ED8",
+            hover_color="#1E40AF",
+            text_color="white",
+            command=self.go_back,
+        ).pack(anchor="w")
+
+        # ===== Main area: 2 columns =====
+        main = ctk.CTkFrame(self, fg_color="#F3F6FB")
+        main.pack(fill="both", expand=True, padx=0, pady=(0, 0))
+
+        # Left = blog content, Right = info cards
+        main.grid_columnconfigure(0, weight=3)
+        main.grid_columnconfigure(1, weight=1)
+        main.grid_rowconfigure(0, weight=1)
+
+        # ----- LEFT: scrollable article -----
+        left_scroll = ctk.CTkScrollableFrame(main, fg_color="white", corner_radius=0)
+        # More padding on left so text isn't glued to the edge
+        left_scroll.grid(row=0, column=0, sticky="nsew", padx=(40, 20), pady=20)
+        left_scroll.grid_columnconfigure(0, weight=1)
+
+        # Inner wrapper to add internal padding for the text
+        content_wrapper = ctk.CTkFrame(left_scroll, fg_color="transparent")
+        content_wrapper.pack(fill="both", expand=True, padx=25, pady=10)
+        content_wrapper.grid_columnconfigure(0, weight=1)
+
+        content = self.get_content()
+        self.render_bangla_article(content_wrapper, content)
+
+        # ----- RIGHT: trip info cards -----
+        right = ctk.CTkFrame(main, fg_color="transparent")
+        right.grid(row=0, column=1, sticky="nsew", padx=(10, 20), pady=20)
+
+        self.build_info_cards(right)
+
+    # ---------- content loading ----------
+    def get_content(self):
+        path = self.attraction.get("content_file")
+        if path:
+            return load_content_from_file(path)
+
+        content = self.attraction.get("content")
+        if content:
+            if content.endswith((".md", ".txt")) and ("/" in content or "\\" in content):
+                return load_content_from_file(content)
+            return content
+
+        return self.attraction.get("summary") or "No description available."
+
+    # ---------- Bangla article renderer with arrow headings ----------
+    def render_bangla_article(self, parent, text: str):
+        """
+        Understands your current format, e.g.:
+
+            <-কক্সবাজার সমুদ্র সৈকত->
+            normal paragraph...
+
+            <-কক্সবাজার ভ্রমণের উপযুক্ত সময়->
+
+        First arrow heading = big centered title.
+        Others = section titles.
+        Lines starting with '*' = bullets.
+        """
+
+        # 🔤 CHANGE FONT HERE IF YOU WANT
+        # Use a Bangla-capable font installed on your system, or keep None.
+        # Examples: "Nirmala UI", "Vrinda", "Siyam Rupali", "SolaimanLipi"
+        BENGALI_FONT = None
+
+        body_font   = ctk.CTkFont(family=BENGALI_FONT, size=15)
+        h1_font     = ctk.CTkFont(family=BENGALI_FONT, size=22, weight="bold")
+        h2_font     = ctk.CTkFont(family=BENGALI_FONT, size=18, weight="bold")
+        bullet_font = ctk.CTkFont(family=BENGALI_FONT, size=15)
+
+        lines = text.splitlines()
+        row = 0
+        buffer = []
+        first_arrow_heading_seen = False
+
+        def flush_paragraph():
+            nonlocal row, buffer
+            if not buffer:
+                return
+            paragraph = " ".join(buffer).strip()
+            if paragraph:
+                lbl = ctk.CTkLabel(
+                    parent,
+                    text=paragraph,
+                    font=body_font,
+                    text_color="#111827",
+                    justify="left",
+                    wraplength=520,   # safe width so it doesn't get cut
+                )
+                lbl.grid(row=row, column=0, sticky="w", padx=(10, 0), pady=(2, 10))
+                row += 1
+            buffer = []
+
+        for line in lines:
+            stripped = line.strip()
+
+            # empty line => paragraph break
+            if not stripped:
+                flush_paragraph()
+                continue
+
+            # ----- arrow headings: <- heading ->
+            if stripped.startswith("<-") and stripped.endswith("->"):
+                flush_paragraph()
+                heading_text = stripped[2:-2].strip()
+
+                if not first_arrow_heading_seen:
+                    first_arrow_heading_seen = True
+                    # main big centered title
+                    lbl = ctk.CTkLabel(
+                        parent,
+                        text=heading_text,
+                        font=h1_font,
+                        text_color="#111827",
+                        justify="center",
+                        wraplength=520,
+                    )
+                    lbl.grid(row=row, column=0, sticky="ew", padx=(10, 10), pady=(12, 8))
+                else:
+                    # section heading
+                    lbl = ctk.CTkLabel(
+                        parent,
+                        text=heading_text,
+                        font=h2_font,
+                        text_color="#111827",
+                        justify="left",
+                        wraplength=520,
+                    )
+                    lbl.grid(row=row, column=0, sticky="w", padx=(10, 0), pady=(16, 6))
+
+                row += 1
+                continue
+
+            # ----- bullets: starting with '*'
+            if stripped.startswith("*"):
+                flush_paragraph()
+                bullet_text = stripped.lstrip("*").strip()
+                bullet_row = ctk.CTkFrame(parent, fg_color="transparent")
+                bullet_row.grid(row=row, column=0, sticky="w", padx=(10, 0), pady=2)
+
+                ctk.CTkLabel(
+                    bullet_row,
+                    text="•",
+                    font=bullet_font,
+                    text_color="#111827",
+                    width=14,
+                ).pack(side="left")
+
+                ctk.CTkLabel(
+                    bullet_row,
+                    text=bullet_text,
+                    font=bullet_font,
+                    text_color="#111827",
+                    justify="left",
+                    wraplength=500,
+                ).pack(side="left")
+
+                row += 1
+                continue
+
+            # normal text → part of a paragraph
+            buffer.append(stripped)
+
+        flush_paragraph()
+
+    # ---------- info cards on the right ----------
+    def build_info_cards(self, parent):
+        best_time = self.attraction.get("best_time", "October–March (dry & pleasant)")
+        duration = self.attraction.get("ideal_duration", "2–3 days")
+        ideal_for = self.attraction.get("ideal_for", "Families, couples, photographers")
+        highlights = self.attraction.get(
+            "highlights",
+            "- Sunrise or sunset views\n- Local food & markets\n- Unique cultural spots"
+        )
+
+        # Trip Snapshot
+        card1 = ctk.CTkFrame(parent, corner_radius=16, fg_color="#FFFFFF")
+        card1.pack(fill="x", pady=(0, 10))
+
+        ctk.CTkLabel(
+            card1,
+            text="Trip Snapshot",
+            font=ctk.CTkFont(size=16, weight="bold"),
+            text_color="#111827",
+        ).pack(anchor="w", padx=12, pady=(10, 4))
+
+        ctk.CTkLabel(
+            card1,
+            text=f"🕒 Ideal duration: {duration}\n"
+                 f"🎯 Ideal for: {ideal_for}",
+            font=ctk.CTkFont(size=12),
+            text_color="#374151",
+            justify="left",
+        ).pack(anchor="w", padx=12, pady=(0, 10))
+
+        # Best time
+        card2 = ctk.CTkFrame(parent, corner_radius=16, fg_color="#DBEAFE")
+        card2.pack(fill="x", pady=(0, 10))
+
+        ctk.CTkLabel(
+            card2,
+            text="Best time to visit",
+            font=ctk.CTkFont(size=15, weight="bold"),
+            text_color="#1E3A8A",
+        ).pack(anchor="w", padx=12, pady=(10, 4))
+
+        ctk.CTkLabel(
+            card2,
+            text=best_time,
+            font=ctk.CTkFont(size=12),
+            text_color="#1E3A8A",
+            justify="left",
+            wraplength=260,
+        ).pack(anchor="w", padx=12, pady=(0, 10))
+
+        # Highlights
+        card3 = ctk.CTkFrame(parent, corner_radius=16, fg_color="#FEF3C7")
+        card3.pack(fill="x", pady=(0, 10))
+
+        ctk.CTkLabel(
+            card3,
+            text="Highlights",
+            font=ctk.CTkFont(size=15, weight="bold"),
+            text_color="#92400E",
+        ).pack(anchor="w", padx=12, pady=(10, 4))
+
+        ctk.CTkLabel(
+            card3,
+            text=highlights,
+            font=ctk.CTkFont(size=12),
+            text_color="#92400E",
+            justify="left",
+            wraplength=260,
+        ).pack(anchor="w", padx=12, pady=(0, 10))
+
+
+
+
+    # ---------- info cards on the right ----------
+    def build_info_cards(self, parent):
+        best_time = self.attraction.get("best_time", "November–March (dry & pleasant)")
+        duration = self.attraction.get("ideal_duration", "2–3 days")
+        ideal_for = self.attraction.get("ideal_for", "Families, couples, photographers")
+        highlights = self.attraction.get(
+            "highlights",
+            "- Sunrise or sunset views\n- Local food & markets\n- Unique cultural spots"
+        )
+
+        # Trip Snapshot
+        card1 = ctk.CTkFrame(parent, corner_radius=16, fg_color="#FFFFFF")
+        card1.pack(fill="x", pady=(0, 10))
+
+        ctk.CTkLabel(
+            card1,
+            text="Trip Snapshot",
+            font=ctk.CTkFont(size=16, weight="bold"),
+            text_color="#111827",
+        ).pack(anchor="w", padx=12, pady=(10, 4))
+
+        ctk.CTkLabel(
+            card1,
+            text=f"🕒 Ideal duration: {duration}\n"
+                 f"🎯 Ideal for: {ideal_for}",
+            font=ctk.CTkFont(size=12),
+            text_color="#374151",
+            justify="left",
+        ).pack(anchor="w", padx=12, pady=(0, 10))
+
+        # Best time
+        card2 = ctk.CTkFrame(parent, corner_radius=16, fg_color="#DBEAFE")
+        card2.pack(fill="x", pady=(0, 10))
+
+        ctk.CTkLabel(
+            card2,
+            text="Best time to visit",
+            font=ctk.CTkFont(size=15, weight="bold"),
+            text_color="#1E3A8A",
+        ).pack(anchor="w", padx=12, pady=(10, 4))
+
+        ctk.CTkLabel(
+            card2,
+            text=best_time,
+            font=ctk.CTkFont(size=12),
+            text_color="#1E3A8A",
+            justify="left",
+            wraplength=260,
+        ).pack(anchor="w", padx=12, pady=(0, 10))
+
+        # Highlights
+        card3 = ctk.CTkFrame(parent, corner_radius=16, fg_color="#FEF3C7")
+        card3.pack(fill="x", pady=(0, 10))
+
+        ctk.CTkLabel(
+            card3,
+            text="Highlights",
+            font=ctk.CTkFont(size=15, weight="bold"),
+            text_color="#92400E",
+        ).pack(anchor="w", padx=12, pady=(10, 4))
+
+        ctk.CTkLabel(
+            card3,
+            text=highlights,
+            font=ctk.CTkFont(size=12),
+            text_color="#92400E",
+            justify="left",
+            wraplength=260,
+        ).pack(anchor="w", padx=12, pady=(0, 10))
+
+
 
 class PlaceholderPage(ctk.CTkFrame):
     def __init__(self, parent, name):
