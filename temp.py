@@ -1,14 +1,13 @@
+# temp.py (merged)
 import customtkinter as ctk
 import sqlite3
 import hashlib
 import os
 import json
-from PIL import Image
-
-
+from PIL import Image, ImageTk
 
 DB_PATH = "data/users.db"
-ATTRACTIONS_PATH = "data/attractions.json"
+ATTRACTIONS_PATH = "data/attractions_augmented.json"
 
 
 
@@ -147,6 +146,10 @@ class App(ctk.CTk):
         self.pages = {}
         self.show_page("Overview")  # show default page
 
+        # navigation history (stack of page names)
+        self.page_history = []
+        self.current_page_name = None
+
     def build_sidebar(self):
         if getattr(self, "sidebar_built", False):
             return
@@ -207,9 +210,7 @@ class App(ctk.CTk):
             )
             btn.pack(fill="x", padx=12, pady=3)
             self.sidebar_buttons[name] = btn
-
-        # ❌ no spacer here anymore
-
+            
         # ----- Logout button directly after last option -----
         ctk.CTkButton(
             self.sidebar,
@@ -267,16 +268,23 @@ class App(ctk.CTk):
                 self.pages[name] = TopAttractionsPage(self.content)
             else:
                 self.pages[name] = PlaceholderPage(self.content, name)
-            self.pages[name].grid(row=0, column=0, sticky="nsew")
+
         return self.pages[name]
 
-    def show_page(self, name):
+    def show_page(self, name, record_history: bool = True):
+        # record currently shown page (if any) to allow "Back"
+        if record_history and getattr(self, "current_page_name", None) and self.current_page_name != name:
+            self.page_history.append(self.current_page_name)
+
         # Clear old widgets from the content frame
         for widget in self.content.winfo_children():
             widget.grid_remove()
 
         page = self.get_page(name)
         page.grid(row=0, column=0, sticky="nsew")
+
+        # remember what is currently visible
+        self.current_page_name = name
 
         # Make sure the page expands with the content area
         self.content.grid_rowconfigure(0, weight=1)
@@ -287,23 +295,54 @@ class App(ctk.CTk):
             self.highlight_sidebar(name)
 
 
+    def go_back(self):
+        """Navigate to the previous page in the history stack (if any)."""
+        if not getattr(self, "page_history", None):
+            # nothing to go back to — fallback to Overview
+            self.show_page("Overview", record_history=False)
+            return
+
+        prev = self.page_history.pop()
+        # show previous page without adding current page back into history
+        self.show_page(prev, record_history=False)
+
+
+
     def show_attraction_page(self, attraction):
-        """Show full-page attraction detail inside main content area."""
+        """Show full-page attraction detail inside main content area.
+
+        Ensure the current page (e.g. 'Top Attractions') is saved into history
+        so go_back() returns to it.
+        """
         # Optional: close sidebar for better focus
         if getattr(self, "sidebar_visible", False):
             self.toggle_sidebar()
+
+        # Record current page in history so Back returns here
+        cur = getattr(self, "current_page_name", None)
+        if cur:
+            if not hasattr(self, "page_history"):
+                self.page_history = []
+            # Avoid pushing duplicate entries
+            if not self.page_history or self.page_history[-1] != cur:
+                self.page_history.append(cur)
 
         # Hide any current pages in content
         for widget in self.content.winfo_children():
             widget.grid_remove()
 
         # Create a fresh detail page (not cached)
+        detail_key = f"Attraction:{attraction.get('name','unknown')}"
+        # create the brochure/detail and show it
         detail_page = AttractionDetailPageBrochure(
             self.content,
             attraction,
-            go_back_callback=lambda: self.show_page("Top Attractions")
+            go_back_callback=self.go_back
         )
         detail_page.grid(row=0, column=0, sticky="nsew")
+
+        # remember that we're now showing this "page"
+        self.current_page_name = detail_key
         self.content.grid_rowconfigure(0, weight=1)
         self.content.grid_columnconfigure(0, weight=1)
 
@@ -996,10 +1035,11 @@ class TopAttractionsPage(FastScrollableFrame):  # or ctk.CTkScrollableFrame
             ctk.CTkLabel(container, text="No attractions found.").pack(pady=20)
             return
 
-        self.image_cache = []  # keep (normal_img, zoom_img) alive
+        # keep cached images alive: list of (normal, zoom) tuples
+        self.image_cache = []
 
         grid_frame = ctk.CTkFrame(container, fg_color="transparent")
-        grid_frame.pack(padx=20, pady=20)
+        grid_frame.pack(padx=20, pady=20, fill="both", expand=True)
 
         # 👉 3 columns now
         grid_frame.grid_columnconfigure(0, weight=1, uniform="col")
@@ -1011,75 +1051,127 @@ class TopAttractionsPage(FastScrollableFrame):  # or ctk.CTkScrollableFrame
             col = idx % 3
             self.create_card(grid_frame, attraction, row, col)
 
-    def create_card(self, parent, attraction, row, col):
-        # Smaller size so 3 fit in a 1000px window
-        CARD_W, CARD_H = 300, 200
-        IMG_W, IMG_H = 300, 200
-        ZOOM_W, ZOOM_H = 330, 220
+    # ---------- helper: safe image loader ----------
+    @staticmethod
+    def _safe_ctk_image(path, size):
+        """
+        Try to open path with PIL and produce a ctk.CTkImage sized to `size`.
+        Returns None on failure.
+        """
+        if not path:
+            return None
+        try:
+            # normalize path (helps with inconsistent separators)
+            path = os.path.normpath(path)
+            if not os.path.isabs(path):
+                # keep relative paths relative to current working dir
+                path = os.path.join(os.getcwd(), path) if not os.path.exists(path) else path
 
-        # ----- Card container -----
-        card = ctk.CTkFrame(
-            parent,
-            width=CARD_W,
-            height=CARD_H,
-            corner_radius=18,
-            fg_color="#FFFFFF",
-        )
-        card.grid(row=row, column=col, padx=10, pady=10, sticky="nsew")
+            if not os.path.exists(path):
+                # still doesn't exist
+                raise FileNotFoundError(f"Image not found: {path}")
+
+            pil_img = Image.open(path).convert("RGBA")
+            return ctk.CTkImage(light_image=pil_img, dark_image=pil_img, size=size)
+        except Exception as e:
+            # don't crash; just return None
+            print(f"[TopAttractionsPage] Warning: couldn't load image '{path}': {e}")
+            return None
+
+    def create_card(self, parent, attraction, row, col):
+        # Larger visual sizes (bigger image)
+        CARD_W, CARD_H = 360, 260
+        IMG_W, IMG_H = 360, 240
+        ZOOM_W, ZOOM_H = 390, 240
+
+        # Underlay shadow for depth
+        shadow = ctk.CTkFrame(parent, width=CARD_W+8, height=CARD_H+8, corner_radius=22, fg_color="#E6EEF8")
+        shadow.grid(row=row, column=col, padx=10, pady=10, sticky="n")
+        shadow.grid_propagate(False)
+
+        card = ctk.CTkFrame(parent, width=CARD_W, height=CARD_H, corner_radius=18, fg_color="#FFFFFF")
+        card.grid(row=row, column=col, padx=6, pady=4, sticky="n")
         card.grid_propagate(False)
 
-        # Image label (centered)
-        img_label = ctk.CTkLabel(card, text="")
-        img_label.place(relx=0.5, rely=0.5, anchor="center")
+        # Top-right bookmark heart
+        #heart_lbl = ctk.CTkLabel(card, text="♡", font=ctk.CTkFont(size=14, weight="bold"))
+        #heart_lbl.place(relx=0.94, rely=0.06, anchor="ne")
 
-        normal = zoom = None
-        try:
-            img = Image.open(attraction.get("image", ""))
-            normal = ctk.CTkImage(light_image=img, dark_image=img, size=(IMG_W, IMG_H))
-            zoom = ctk.CTkImage(light_image=img, dark_image=img, size=(ZOOM_W, ZOOM_H))
+        # Image frame (to hold image + overlay)
+        img_frame = ctk.CTkFrame(card, fg_color="transparent", width=IMG_W, height=IMG_H)
+        img_frame.place(x=0, y=0)
+        img_frame.grid_propagate(False)
+
+        img_label = ctk.CTkLabel(img_frame, text="")
+        img_label.place(relx=0.5, rely=0.5, anchor="center")
+        img_label._current_img = None
+
+        # load images using your safe helper
+        normal = self._safe_ctk_image(attraction.get("image", "") or None, (IMG_W, IMG_H))
+        zoom = self._safe_ctk_image(attraction.get("image", "") or None, (ZOOM_W, ZOOM_H))
+
+        if normal:
             self.image_cache.append((normal, zoom))
             img_label.configure(image=normal)
-        except Exception:
-            img_label.configure(text="Image Missing", text_color="red")
+            img_label._current_img = normal
+        else:
+            placeholder = ctk.CTkFrame(img_frame, corner_radius=12, fg_color="#F1F5F9", width=IMG_W-20, height=IMG_H-20)
+            placeholder.place(relx=0.5, rely=0.5, anchor="center")
+            ctk.CTkLabel(placeholder, text="No image", font=ctk.CTkFont(size=12)).place(relx=0.5, rely=0.5, anchor="center")
+            img_label._current_img = None
 
-        # ----- Name bar at bottom-left (no rounded corners) -----
+        # Gradient-like overlay area at bottom to ensure text readability
+        overlay_height = int(IMG_H * 0.30)
+        overlay = ctk.CTkFrame(img_frame, fg_color="transparent", width=IMG_W, height=overlay_height)
+        overlay.place(relx=0, rely=1.0, anchor="sw")
+
+        # Title (on overlay) - only name + short text (no stars)
         name_text = attraction.get("name", "Unknown")
+        title_lbl = ctk.CTkLabel(overlay, text=name_text, font=ctk.CTkFont(size=14, weight="bold"), anchor="w")
+        title_lbl.place(relx=0.03, rely=0.25, anchor="w")
 
-        name_label = ctk.CTkLabel(
-            card,
-            text=f"  {name_text}  ",
-            font=ctk.CTkFont(size=13, weight="bold"),
-            text_color="white",
-            fg_color="#0F172A",    # solid dark bar
-            corner_radius=0,       # 👈 no rounded corners → no white bits
-        )
-        name_label.place(relx=0.02, rely=0.97, anchor="sw")
+        desc_text = attraction.get("desc", "") or attraction.get("summary", "")
+        desc_lbl = ctk.CTkLabel(overlay, text=(desc_text[:120] + ("…" if len(desc_text) > 120 else "")),
+                                font=ctk.CTkFont(size=11), anchor="w", wraplength=IMG_W-24)
+        desc_lbl.place(relx=0.03, rely=0.65, anchor="w")
 
-        # ----- Hover effects -----
+        # keep space below overlay for visual separation
+        # Back area is already handled in detail; we keep card minimal here.
+
+        # Hover behavior: swap to zoom image and show border
         def on_enter(event=None):
-            if zoom is not None:
+            if zoom is not None and getattr(img_label, "_current_img", None) is not zoom:
                 img_label.configure(image=zoom)
+                img_label._current_img = zoom
             card.configure(border_width=2, border_color="#0078D4")
-            card.configure(cursor="hand2")
+            try:
+                card.configure(cursor="hand2")
+            except Exception:
+                pass
 
         def on_leave(event=None):
-            if normal is not None:
+            if normal is not None and getattr(img_label, "_current_img", None) is not normal:
                 img_label.configure(image=normal)
+                img_label._current_img = normal
             card.configure(border_width=0)
-            card.configure(cursor="")
+            try:
+                card.configure(cursor="")
+            except Exception:
+                pass
 
-        # ----- Click to open detail page -----
         def on_click(event=None):
             app = self.winfo_toplevel()
-            app.show_attraction_page(attraction)
-
-        for w in (card, img_label, name_label):
-            w.bind("<Enter>", on_enter)
-            w.bind("<Leave>", on_leave)
-            w.bind("<Button-1>", on_click)
+            if hasattr(app, "show_attraction_page"):
+                app.show_attraction_page(attraction)
+            else:
+                print("[TopAttractionsPage] show_attraction_page not found on app")
 
 
-
+        interactive_widgets = (card, img_frame, img_label, title_lbl, desc_lbl)
+        for w in interactive_widgets:
+            w.bind("<Enter>", on_enter, add="+")
+            w.bind("<Leave>", on_leave, add="+")
+            w.bind("<Button-1>", on_click, add="+")
 
 
 class AttractionDetailPage(ctk.CTkFrame):
@@ -1139,7 +1231,7 @@ class AttractionDetailPage(ctk.CTkFrame):
 
         # Last fallback
         return self.attraction.get("summary") or "No description available."
-    
+
 
 class AttractionDetailPageBrochure(ctk.CTkFrame):
     def __init__(self, parent, attraction, go_back_callback):
@@ -1370,79 +1462,7 @@ class AttractionDetailPageBrochure(ctk.CTkFrame):
 
         flush_paragraph()
 
-    # ---------- info cards on the right ----------
-    def build_info_cards(self, parent):
-        best_time = self.attraction.get("best_time", "October–March (dry & pleasant)")
-        duration = self.attraction.get("ideal_duration", "2–3 days")
-        ideal_for = self.attraction.get("ideal_for", "Families, couples, photographers")
-        highlights = self.attraction.get(
-            "highlights",
-            "- Sunrise or sunset views\n- Local food & markets\n- Unique cultural spots"
-        )
-
-        # Trip Snapshot
-        card1 = ctk.CTkFrame(parent, corner_radius=16, fg_color="#FFFFFF")
-        card1.pack(fill="x", pady=(0, 10))
-
-        ctk.CTkLabel(
-            card1,
-            text="Trip Snapshot",
-            font=ctk.CTkFont(size=16, weight="bold"),
-            text_color="#111827",
-        ).pack(anchor="w", padx=12, pady=(10, 4))
-
-        ctk.CTkLabel(
-            card1,
-            text=f"🕒 Ideal duration: {duration}\n"
-                 f"🎯 Ideal for: {ideal_for}",
-            font=ctk.CTkFont(size=12),
-            text_color="#374151",
-            justify="left",
-        ).pack(anchor="w", padx=12, pady=(0, 10))
-
-        # Best time
-        card2 = ctk.CTkFrame(parent, corner_radius=16, fg_color="#DBEAFE")
-        card2.pack(fill="x", pady=(0, 10))
-
-        ctk.CTkLabel(
-            card2,
-            text="Best time to visit",
-            font=ctk.CTkFont(size=15, weight="bold"),
-            text_color="#1E3A8A",
-        ).pack(anchor="w", padx=12, pady=(10, 4))
-
-        ctk.CTkLabel(
-            card2,
-            text=best_time,
-            font=ctk.CTkFont(size=12),
-            text_color="#1E3A8A",
-            justify="left",
-            wraplength=260,
-        ).pack(anchor="w", padx=12, pady=(0, 10))
-
-        # Highlights
-        card3 = ctk.CTkFrame(parent, corner_radius=16, fg_color="#FEF3C7")
-        card3.pack(fill="x", pady=(0, 10))
-
-        ctk.CTkLabel(
-            card3,
-            text="Highlights",
-            font=ctk.CTkFont(size=15, weight="bold"),
-            text_color="#92400E",
-        ).pack(anchor="w", padx=12, pady=(10, 4))
-
-        ctk.CTkLabel(
-            card3,
-            text=highlights,
-            font=ctk.CTkFont(size=12),
-            text_color="#92400E",
-            justify="left",
-            wraplength=260,
-        ).pack(anchor="w", padx=12, pady=(0, 10))
-
-
-
-
+ 
     # ---------- info cards on the right ----------
     def build_info_cards(self, parent):
         best_time = self.attraction.get("best_time", "November–March (dry & pleasant)")
