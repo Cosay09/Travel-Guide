@@ -1,0 +1,162 @@
+{
+  "slug": "coxs_bazar",
+  "name": "Cox's Bazar 3-day sample",
+  "days": 7,
+  "days_data": [
+    {
+      "day": 1,
+      "stops": [
+        {
+          "time": "09:00",
+          "name": "Cox’s Bazar Beach",
+          "desc": "Cox’s Bazar Beach — the world’s longest natural sea beach. Enjoy a morning walk, fresh coconut water, swimming, or relaxing by the waves. Great for photography and beach activities.",
+          "entry_fee": 0
+        },
+        {
+          "time": "15:30",
+          "name": "Marine Drive & Himchori Viewpoint",
+          "desc": "Drive along the scenic Marine Drive towards Himchori. Stop at viewpoints for sea–hill views and visit Himchori waterfall area. Perfect for golden hour photos.",
+          "entry_fee": 0
+        },
+        {
+          "time": "17:30",
+          "name": "Sunset at Inani Beach",
+          "desc": "Inani Beach offers quieter shores and beautiful coral stones. Enjoy the sunset in a peaceful atmosphere before returning to town.",
+          "entry_fee": 0
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "stops": [
+        {
+          "time": "09:00",
+          "name": "Himchori National Park",
+          "desc": "Climb to the viewpoint inside Himchori Park for panoramic coastal views. A short hike, easy for beginners, and great for morning sightseeing.",
+          "entry_fee": 0
+        },
+        {
+          "time": "12:00",
+          "name": "Inani Beach (Deep Exploration)",
+          "desc": "Spend midday relaxing at the cleaner, quieter part of Inani. Ideal for swimming, walking, and scenic photography.",
+          "entry_fee": 0
+        },
+        {
+          "time": "17:00",
+          "name": "Burmese Market",
+          "desc": "Explore Burmese Market for souvenirs, local pickles, dry fish, handmade items, and snacks. A must-visit for local culture and gifts.",
+          "entry_fee": 0
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "stops": [
+        {
+          "time": "08:30",
+          "name": "Moheshkhali Island Trip",
+          "desc": "Take a speedboat to Moheshkhali. Visit Adinath Temple, walk up the hill for views, explore small villages, and try fresh seafood. A calm, scenic half-day trip.",
+          "entry_fee": 0
+        },
+        {
+          "time": "14:30",
+          "name": "Kolatoli Beach & Parasailing",
+          "desc": "Return to Cox’s Bazar and visit Kolatoli Beach. Try parasailing or beach activities, or simply relax by the water.",
+          "entry_fee": 0
+        },
+        {
+          "time": "17:30",
+          "name": "Final Sunset at Laboni Beach",
+          "desc": "Spend your last evening enjoying the signature Cox's Bazar sunset, followed by dinner at a seaside restaurant.",
+          "entry_fee": 0
+        }
+      ]
+    },
+    {
+      "day": 4,
+      "stops": [
+        {
+          "time": "08:30",
+          "name": "Saint Martin’s Island Trip",
+          "desc": "Take the early morning ship from Teknaf to Saint Martin's Island. Enjoy turquoise water, coral beaches, and seafood stalls. Spend time at West Beach and Coconut Grove before returning in the afternoon or evening.",
+          "entry_fee": 0
+        },
+        {
+          "time": "16:30",
+          "name": "Evening Relaxation in Cox’s Bazar",
+          "desc": "After returning from the island trip, enjoy a peaceful walk near Kolatoli or Sugandha Beach and end the day with a quiet dinner.",
+          "entry_fee": 0
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "stops": [
+        {
+          "time": "09:00",
+          "name": "Radiant Fish World",
+          "desc": "Visit Bangladesh’s first marine-themed indoor aquarium featuring sharks, stingrays, tunnels, and engaging exhibits—fun for both kids and adults.",
+          "entry_fee": 250
+        },
+        {
+          "time": "12:00",
+          "name": "Mermaid Eco Resort / Mermaid Beach Café",
+          "desc": "Relax at Mermaid Café or the Eco Resort area. Enjoy the peaceful atmosphere, beachside seating, and good food—perfect for a mid-trip recharge.",
+          "entry_fee": 0
+        },
+        {
+          "time": "16:30",
+          "name": "Beach Activities",
+          "desc": "Head to Laboni or Sugandha Beach for ATVs, horse rides, fun activities, or simply enjoying a relaxing sunset.",
+          "entry_fee": 0
+        }
+      ]
+    },
+    {
+      "day": 6,
+      "stops": [
+        {
+          "time": "08:00",
+          "name": "Ramu Buddhist Village & Temples",
+          "desc": "Visit Ramu to explore Buddhist monasteries, wooden Buddha statues, and quiet cultural surroundings—great for photography and learning local heritage.",
+          "entry_fee": 0
+        },
+        {
+          "time": "12:30",
+          "name": "Dulahazara Safari Park",
+          "desc": "Explore the Safari Park featuring tigers, lions, deer, giraffes, and more. A great wildlife experience for families and nature lovers.",
+          "entry_fee": 50
+        },
+        {
+          "time": "17:00",
+          "name": "Rooftop Dinner",
+          "desc": "Enjoy a relaxing rooftop dinner overlooking the coastline. A great way to unwind after a full day of sightseeing.",
+          "entry_fee": 0
+        }
+      ]
+    },
+    {
+      "day": 7,
+      "stops": [
+        {
+          "time": "09:00",
+          "name": "Souvenir Shopping & Beach Time",
+          "desc": "Visit Burmese Market or beachside shops for souvenirs, pearls, pickles, dry fish, and handmade crafts. Relax at the beach if you want a final morning dip.",
+          "entry_fee": 0
+        },
+        {
+          "time": "13:00",
+          "name": "Check-out & Lunch",
+          "desc": "Enjoy your last lunch in Cox’s Bazar before preparing for departure.",
+          "entry_fee": 0
+        },
+        {
+          "time": "16:00",
+          "name": "Final Beach Walk / Departure",
+          "desc": "Take one last walk on the beach, capture final photos, and depart with beautiful memories of Cox’s Bazar.",
+          "entry_fee": 0
+        }
+      ]
+    }
+  ]
+}
