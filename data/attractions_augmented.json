@@ -1,0 +1,203 @@
+[
+  {
+    "slug": "coxsbazar-beach",
+    "name": "Cox's Bazar Beach",
+    "image": "assets/images/coxsbazar.jpg",
+    "location": "Cox's Bazar, Chattogram",
+    "content_file": "content/coxsbazar.md",
+    "desc": "Cox's Bazar Beach — a top destination in Cox's Bazar, Chattogram. Discover highlights, tips and practical info.",
+    "summary": "Cox's Bazar Beach — a top destination in Cox's Bazar, Chattogram. Discover highlights, tips and practical info.",
+    "rating": 4.2,
+    "tags": [
+      "Beach",
+      "Nature"
+    ],
+    "ideal_duration": "1–2 days",
+    "best_time": "October–March",
+    "highlights": "- Must-see viewpoints\n- Local food\n- Nearby trips"
+  },
+  {
+    "slug": "saint-martins-island",
+    "name": "Saint Martin's Island",
+    "image": "assets/images/saint_martin.jpg",
+    "location": "Teknaf, Cox's Bazar",
+    "content_file": "content/saint_martin.md",
+    "desc": "Saint Martin's Island — a top destination in Teknaf, Cox's Bazar. Discover highlights, tips and practical info.",
+    "summary": "Saint Martin's Island — a top destination in Teknaf, Cox's Bazar. Discover highlights, tips and practical info.",
+    "rating": 3.9,
+    "tags": [
+      "Beach",
+      "Nature"
+    ],
+    "ideal_duration": "1–2 days",
+    "best_time": "October–March",
+    "highlights": "- Must-see viewpoints\n- Local food\n- Nearby trips"
+  },
+  {
+    "slug": "sundarbans",
+    "name": "Sundarbans",
+    "image": "assets/images/sundarban.jpg",
+    "location": "Khulna & Satkhira",
+    "content_file": "content/sundarbans.md",
+    "desc": "Sundarbans — a top destination in Khulna & Satkhira. Discover highlights, tips and practical info.",
+    "summary": "Sundarbans — a top destination in Khulna & Satkhira. Discover highlights, tips and practical info.",
+    "rating": 4.1,
+    "tags": [
+      "Wildlife",
+      "Nature"
+    ],
+    "ideal_duration": "1–2 days",
+    "best_time": "October–March",
+    "highlights": "- Must-see viewpoints\n- Local food\n- Nearby trips"
+  },
+  {
+    "slug": "sajek-valley",
+    "name": "Sajek Valley",
+    "image": "assets/images/sajek_valley.jpg",
+    "location": "Rangamati Hill District",
+    "content_file": "content/sajek_valley.md",
+    "desc": "Sajek Valley — a top destination in Rangamati Hill District. Discover highlights, tips and practical info.",
+    "summary": "Sajek Valley — a top destination in Rangamati Hill District. Discover highlights, tips and practical info.",
+    "rating": 3.9,
+    "tags": [
+      "Hills",
+      "Scenic"
+    ],
+    "ideal_duration": "1–2 days",
+    "best_time": "October–March",
+    "highlights": "- Must-see viewpoints\n- Local food\n- Nearby trips"
+  },
+  {
+    "slug": "ahsan-manzil",
+    "name": "Ahsan Manzil",
+    "image": "assets/images/ahsanmanjil.jpg",
+    "location": "Old Dhaka",
+    "content_file": "content/ahsan_manzil.md",
+    "desc": "Ahsan Manzil — a top destination in Old Dhaka. Discover highlights, tips and practical info.",
+    "summary": "Ahsan Manzil — a top destination in Old Dhaka. Discover highlights, tips and practical info.",
+    "rating": 3.9,
+    "tags": [
+      "Historical",
+      "Culture"
+    ],
+    "ideal_duration": "1–2 days",
+    "best_time": "October–March",
+    "highlights": "- Must-see viewpoints\n- Local food\n- Nearby trips"
+  },
+  {
+    "slug": "sukhiya-valley",
+    "name": "Sukhiya Valley",
+    "image": "assets/images/sukhiya_valley.jpg",
+    "location": "Sylhet",
+    "content_file": "content/sukhiya_valley.md",
+    "desc": "Sukhiya Valley — a top destination in Sylhet. Discover highlights, tips and practical info.",
+    "summary": "Sukhiya Valley — a top destination in Sylhet. Discover highlights, tips and practical info.",
+    "rating": 4.0,
+    "tags": [
+      "Hills",
+      "Scenic"
+    ],
+    "ideal_duration": "1–2 days",
+    "best_time": "October–March",
+    "highlights": "- Must-see viewpoints\n- Local food\n- Nearby trips"
+  },
+  {
+    "slug": "kaptai-lake",
+    "name": "Kaptai Lake",
+    "image": "assets/images/kaptai_lake.jpg",
+    "location": "Rangamati",
+    "content_file": "content/kaptai_lake.md",
+    "desc": "Kaptai Lake — a top destination in Rangamati. Discover highlights, tips and practical info.",
+    "summary": "Kaptai Lake — a top destination in Rangamati. Discover highlights, tips and practical info.",
+    "rating": 4.0,
+    "tags": [
+      "Lake",
+      "Water"
+    ],
+    "ideal_duration": "1–2 days",
+    "best_time": "October–March",
+    "highlights": "- Must-see viewpoints\n- Local food\n- Nearby trips"
+  },
+  {
+    "slug": "jaflong",
+    "name": "Jaflong",
+    "image": "assets/images/jaflong.jpg",
+    "location": "Sylhet",
+    "content_file": "content/jaflong.md",
+    "desc": "Jaflong — a top destination in Sylhet. Discover highlights, tips and practical info.",
+    "summary": "Jaflong — a top destination in Sylhet. Discover highlights, tips and practical info.",
+    "rating": 4.1,
+    "tags": [
+      "Sightseeing"
+    ],
+    "ideal_duration": "1–2 days",
+    "best_time": "October–March",
+    "highlights": "- Must-see viewpoints\n- Local food\n- Nearby trips"
+  },
+  {
+    "slug": "langlok-waterfall",
+    "name": "Langlok Waterfall",
+    "image": "assets/images/langlok_waterfall.jpg",
+    "location": "Chattogram Hill Tracts",
+    "content_file": "content/langlok_waterfall.md",
+    "desc": "Langlok Waterfall — a top destination in Chattogram Hill Tracts. Discover highlights, tips and practical info.",
+    "summary": "Langlok Waterfall — a top destination in Chattogram Hill Tracts. Discover highlights, tips and practical info.",
+    "rating": 3.9,
+    "tags": [
+      "Hills",
+      "Scenic"
+    ],
+    "ideal_duration": "1–2 days",
+    "best_time": "October–March",
+    "highlights": "- Must-see viewpoints\n- Local food\n- Nearby trips"
+  },
+  {
+    "slug": "bholaganj",
+    "name": "Bholaganj",
+    "image": "assets/images/bholaganj.jpg",
+    "location": "Sylhet",
+    "content_file": "content/bholaganj.md",
+    "desc": "Bholaganj — a top destination in Sylhet. Discover highlights, tips and practical info.",
+    "summary": "Bholaganj — a top destination in Sylhet. Discover highlights, tips and practical info.",
+    "rating": 4.0,
+    "tags": [
+      "Sightseeing"
+    ],
+    "ideal_duration": "1–2 days",
+    "best_time": "October–March",
+    "highlights": "- Must-see viewpoints\n- Local food\n- Nearby trips"
+  },
+  {
+    "slug": "tanguar-haor",
+    "name": "Tanguar Haor",
+    "image": "assets/images/tanguar_haor.jpg",
+    "location": "Sunamganj",
+    "content_file": "content/tanguar_haor.md",
+    "desc": "Tanguar Haor — a top destination in Sunamganj. Discover highlights, tips and practical info.",
+    "summary": "Tanguar Haor — a top destination in Sunamganj. Discover highlights, tips and practical info.",
+    "rating": 3.9,
+    "tags": [
+      "Lake",
+      "Water"
+    ],
+    "ideal_duration": "1–2 days",
+    "best_time": "October–March",
+    "highlights": "- Must-see viewpoints\n- Local food\n- Nearby trips"
+  },
+  {
+    "slug": "as-salam-jame-mosque",
+    "name": "As-Salam Jame Mosque",
+    "image": "assets/images/as_salam_jame_mosque.jpg",
+    "location": "Dhaka",
+    "content_file": "content/as_salam_jame_mosque.md",
+    "desc": "As-Salam Jame Mosque — a top destination in Dhaka. Discover highlights, tips and practical info.",
+    "summary": "As-Salam Jame Mosque — a top destination in Dhaka. Discover highlights, tips and practical info.",
+    "rating": 3.9,
+    "tags": [
+      "Sightseeing"
+    ],
+    "ideal_duration": "1–2 days",
+    "best_time": "October–March",
+    "highlights": "- Must-see viewpoints\n- Local food\n- Nearby trips"
+  }
+]
