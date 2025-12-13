@@ -1,0 +1,141 @@
+{
+  "city": "Cox's Bazar",
+  "currency": "BDT",
+  "hotels": [
+    {
+      "name": "Seagull Hotel",
+      "website": "https://seagullhotelbd.com/",
+      "phone": "+880 341-64-91",
+      "area": "Hotel Motel Zone",
+      "check_in": "14:00",
+      "check_out": "12:00",
+      "stars": 4,
+      "description": "Modern and safe beachfront hotel with landscaped private walkway to the beach, hidden bar, and a nice outdoor swimming pool.",
+      "price_range": {
+        "min": 6000,
+        "max": 40000
+      },
+      "tier": "luxury"
+    },
+    {
+      "name": "Hotel Sea Crown",
+      "website": "https://www.hotelseacrownbd.com/",
+      "phone": "+880 341-64795",
+      "area": "Marine Drive, Kolatoli New Beach",
+      "check_in": "14:00",
+      "check_out": "12:00",
+      "stars": 3,
+      "description": "Three-star deluxe hotel located on the beach along Marine Drive.",
+      "price_range": {
+        "min": 4000,
+        "max": 40000
+      },
+      "tier": "comfortable"
+    },
+    {
+      "name": "Mermaid Beach Resort",
+      "website": "",
+      "phone": "+880 18 4141 6468-69",
+      "area": "Pechar Dwip",
+      "check_in": "14:00",
+      "check_out": "12:00",
+      "stars": 4,
+      "description": "Air-conditioned rooms on a secluded part of the beach with excellent views, fresh seafood restaurant, and reliable Wi-Fi.",
+      "price_range": {
+        "min": 11000,
+        "max": 25000
+      },
+      "tier": "luxury"
+    },
+    {
+      "name": "Royal Tulip Sea Pearl Beach Resort & Spa",
+      "website": "https://www.seapearlcoxsbazar.com/",
+      "phone": "+880 341 52666-80",
+      "area": "Jaliapalong, Inani, Ukhia",
+      "check_in": "14:00",
+      "check_out": "12:00",
+      "stars": 5,
+      "description": "Luxury resort with multiple swimming pools (including ladies-only), water park, spa, gym, sports courts, cinema, and extensive indoor & outdoor activities.",
+      "price_range": {
+        "min": 18000,
+        "max": 45000
+      },
+      "tier": "luxury"
+    },
+    {
+      "name": "Long Beach Hotel Cox's Bazar",
+      "website": "https://longbeachhotelbd.com/",
+      "phone": "+88 0341 51843",
+      "area": "14 Kalatoli, Hotel Motel Zone",
+      "check_in": "14:00",
+      "check_out": "12:00",
+      "stars": 4,
+      "description": "Popular mid-range hotel located in the Hotel Motel Zone near the beach.",
+      "price_range": {
+        "min": 6000,
+        "max": 12000
+      },
+      "tier": "comfortable"
+    },
+    {
+      "name": "Sayeman Beach Resort",
+      "website": "https://sayemanresort.com/",
+      "phone": "+88 0175 569 1917",
+      "area": "Marine Drive Road, Kolatoli",
+      "check_in": "14:00",
+      "check_out": "12:00",
+      "stars": 5,
+      "description": "Premium beachfront resort offering surfing, water sports, Thai spa, swimming pool, restaurants, and event venues.",
+      "price_range": {
+        "min": 26112,
+        "max": 63000
+      },
+      "tier": "luxury"
+    },
+    {
+      "name": "Best Western Heritage",
+      "website": "https://bwheritagehotel.com/",
+      "phone": "+88 0341 526 11-17",
+      "area": "Bypass Road, Kolatoli Circle",
+      "check_in": "14:00",
+      "check_out": "12:00",
+      "stars": 4,
+      "description": "Modern international-standard hotel with comfortable rooms and good city access.",
+      "price_range": {
+        "min": 6500,
+        "max": 20000
+      },
+      "tier": "comfortable"
+    },
+    {
+      "name": "Ocean Paradise Hotel & Resort",
+      "website": "http://www.oceanparadisehotel.com/",
+      "phone": "+88 09619 675 675",
+      "area": "28–29 Hotel Motel Zone, Kolatoli Road",
+      "check_in": "14:00",
+      "check_out": "12:00",
+      "stars": 4,
+      "description": "Large well-known hotel located about 300 meters from the beach, offering a range of modern facilities.",
+      "price_range": {
+        "min": 10000,
+        "max": 30000
+      },
+      "tier": "comfortable"
+    },
+    {
+      "name": "Best Western Heritage (Kolatoli Circle)",
+      "website": "https://bwheritagehotel.com/",
+      "phone": "+880 1777744034",
+      "area": "173-01 Bypass Road, Kolatoli Circle",
+      "check_in": "13:00",
+      "check_out": "11:00",
+      "stars": 4,
+      "description": "Large hotel with 231 rooms, balconies, LED TVs, tea & coffee makers, safety lockers, parking, and free Wi-Fi.",
+      "price_range": {
+        "min": 6500,
+        "max": 20000
+      },
+      "tier": "comfortable"
+    }
+  ]
+}
