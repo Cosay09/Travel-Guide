@@ -1,0 +1,172 @@
+[
+  {
+    "name": "Inani Beach",
+    "from": "Cox's Bazar",
+    "distance_km": 25,
+    "ideal_duration": "Half day",
+    "category": "Hidden Gem",
+    "summary": "Rocky beach with fewer crowds and stunning sunsets.",
+    "location": "Cox's Bazar",
+    "map_query": "Inani Beach Cox's Bazar"
+  },
+  {
+    "name": "Mahasthangarh",
+    "from": "Bogura",
+    "distance_km": 12,
+    "ideal_duration": "1 day",
+    "category": "Nearby Trip",
+    "summary": "Ancient archaeological site dating back to 3rd century BC.",
+    "location": "Bogura",
+    "map_query": "Mahasthangarh Bogura"
+  },
+  {
+    "name": "Inani Beach",
+    "from": "Cox's Bazar",
+    "distance_km": 25,
+    "ideal_duration": "Half day",
+    "category": "Hidden Gem",
+    "summary": "Rocky beach with fewer crowds and stunning sunsets.",
+    "location": "Cox's Bazar",
+    "map_query": "Inani Beach Cox's Bazar"
+  },
+  {
+    "name": "Himchari National Park",
+    "from": "Cox's Bazar",
+    "distance_km": 12,
+    "ideal_duration": "2–3 hours",
+    "category": "Nearby Trip",
+    "summary": "Green hills, waterfalls, and panoramic sea views.",
+    "location": "Cox's Bazar",
+    "map_query": "Himchari National Park Cox's Bazar"
+  },
+  {
+    "name": "Dulahazra Safari Park",
+    "from": "Cox's Bazar",
+    "distance_km": 50,
+    "ideal_duration": "Half day",
+    "category": "Nearby Trip",
+    "summary": "Wildlife safari park featuring elephants, deer, and birds.",
+    "location": "Chakaria",
+    "map_query": "Dulahazra Safari Park"
+  },
+  {
+    "name": "Adinath Temple",
+    "from": "Cox's Bazar",
+    "distance_km": 35,
+    "ideal_duration": "Half day",
+    "category": "Hidden Gem",
+    "summary": "Ancient Hindu temple atop a hill with views of the Bay of Bengal.",
+    "location": "Maheshkhali",
+    "map_query": "Adinath Temple Maheshkhali"
+  },
+  {
+    "name": "Maheshkhali Island",
+    "from": "Cox's Bazar",
+    "distance_km": 30,
+    "ideal_duration": "Full day",
+    "category": "Nearby Trip",
+    "summary": "Island with mangroves, salt fields, temples, and local life.",
+    "location": "Maheshkhali",
+    "map_query": "Maheshkhali Island"
+  },
+  {
+    "name": "Sonadia Island",
+    "from": "Cox's Bazar",
+    "distance_km": 15,
+    "ideal_duration": "Half day",
+    "category": "Hidden Gem",
+    "summary": "Quiet island known for migratory birds and pristine beaches.",
+    "location": "Cox's Bazar",
+    "map_query": "Sonadia Island Cox's Bazar"
+  },
+  {
+    "name": "Teknaf Sea Beach",
+    "from": "Cox's Bazar",
+    "distance_km": 85,
+    "ideal_duration": "Full day",
+    "category": "Nearby Trip",
+    "summary": "Southernmost beach of Bangladesh with river and hill views.",
+    "location": "Teknaf",
+    "map_query": "Teknaf Sea Beach"
+  },
+  {
+    "name": "Naf River View Point",
+    "from": "Cox's Bazar",
+    "distance_km": 90,
+    "ideal_duration": "1–2 hours",
+    "category": "Hidden Gem",
+    "summary": "Scenic river viewpoint near the Bangladesh–Myanmar border.",
+    "location": "Teknaf",
+    "map_query": "Naf River Teknaf"
+  },
+  {
+    "name": "Shamlapur Beach",
+    "from": "Cox's Bazar",
+    "distance_km": 70,
+    "ideal_duration": "Half day",
+    "category": "Hidden Gem",
+    "summary": "Peaceful beach with fishing villages and red cliffs.",
+    "location": "Teknaf",
+    "map_query": "Shamlapur Beach Cox's Bazar"
+  },
+  {
+    "name": "Radiant Fish World",
+    "from": "Cox's Bazar",
+    "distance_km": 4,
+    "ideal_duration": "1–2 hours",
+    "category": "Nearby Trip",
+    "summary": "Marine aquarium showcasing colorful fish and sea life.",
+    "location": "Cox's Bazar",
+    "map_query": "Radiant Fish World Cox's Bazar"
+  },
+  {
+    "name": "Buddhist Temple at Ramu",
+    "from": "Cox's Bazar",
+    "distance_km": 15,
+    "ideal_duration": "2–3 hours",
+    "category": "Cultural Hidden Gem",
+    "summary": "Historic Buddhist monasteries and statues along the river.",
+    "location": "Ramu",
+    "map_query": "Ramu Buddhist Temple Cox's Bazar"
+  },
+  {
+    "name": "Bangabandhu Sheikh Mujib Safari Park",
+    "from": "Cox's Bazar",
+    "distance_km": 48,
+    "ideal_duration": "Half day",
+    "category": "Nearby Trip",
+    "summary": "Large safari park with protected wildlife and forest trails.",
+    "location": "Chakaria",
+    "map_query": "Bangabandhu Sheikh Mujib Safari Park Cox's Bazar"
+  },
+  {
+    "name": "Laboni Beach at Sunrise",
+    "from": "Cox's Bazar",
+    "distance_km": 2,
+    "ideal_duration": "1–2 hours",
+    "category": "Hidden Experience",
+    "summary": "Early morning calm with fishermen and golden sunrise views.",
+    "location": "Cox's Bazar",
+    "map_query": "Laboni Beach Cox's Bazar"
+  },
+  {
+    "name": "Kolatoli Cliff View",
+    "from": "Cox's Bazar",
+    "distance_km": 5,
+    "ideal_duration": "1 hour",
+    "category": "Hidden Gem",
+    "summary": "Less-known elevated spot overlooking the coastline.",
+    "location": "Cox's Bazar",
+    "map_query": "Kolatoli Cox's Bazar viewpoint"
+  },
+  {
+    "name": "Marine Drive Scenic Route",
+    "from": "Cox's Bazar",
+    "distance_km": 10,
+    "ideal_duration": "1–2 hours",
+    "category": "Nearby Experience",
+    "summary": "Coastal road offering dramatic sea, hill, and sunset views.",
+    "location": "Cox's Bazar",
+    "map_query": "Marine Drive Cox's Bazar"
+  }
+]

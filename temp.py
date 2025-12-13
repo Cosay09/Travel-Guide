@@ -18,6 +18,7 @@ from pages.placeholder import PlaceholderPage
 from pages.top_attractions import TopAttractionsPage, load_attractions
 from pages.itineraries import ItinerariesPage
 from pages.accommodation import AccommodationPage
+from pages.nearby_trips import NearbyTripsPage
 
 import customtkinter as ctk
 import os
@@ -47,7 +48,7 @@ PAGES = (
     "Food & Drink",
     "Practical Info",
     "Maps & Visuals",
-    "Day Trips & Hidden Gems",
+    "Nearby trips and Hidden gems",
 )
 
 
@@ -170,7 +171,7 @@ class App(ctk.CTk):
             "Food & Drink": "🍛",
             "Practical Info": "ℹ",
             "Maps & Visuals": "🗺",
-            "Day Trips & Hidden Gems": "✨",
+            "Nearby trips and Hidden gems": "✨",
         }
 
         # ----- Menu buttons -----
@@ -250,6 +251,8 @@ class App(ctk.CTk):
                 self.pages[name] = ItinerariesPage(self.content)
             elif name == "Accommodation":
                 self.pages[name] = AccommodationPage(self.content)
+            elif name == "Nearby trips and Hidden gems":
+                self.pages[name] = NearbyTripsPage(self.content)
             else:
                 self.pages[name] = PlaceholderPage(self.content, name)
 
