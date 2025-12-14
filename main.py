@@ -1,30 +1,19 @@
 import os
-from utils.itinerary_utils import (
-    compute_trip_estimate,
-    ensure_saved_itineraries_table,
-    haversine_km,
-    transport_cost_km_mode,
-    accommodation_cost,
-    food_cost,
-    resolve_city_coords
-)
-from utils.itinerary_presets import get_preset_for_destination, preset_to_plan
-from utils.pdf_export import export_itinerary_to_pdf
+from utils.itinerary_utils import ensure_saved_itineraries_table
 from utils.db_utils import init_db
 from utils.auth_utils import authenticate_user, register_user
 
 from pages.overview import OverviewPage
 from pages.placeholder import PlaceholderPage
-from pages.top_attractions import TopAttractionsPage, load_attractions
+from pages.top_attractions import TopAttractionsPage
 from pages.itineraries import ItinerariesPage
 from pages.accommodation import AccommodationPage
+from pages.nearby_trips import NearbyTripsPage
 
 import customtkinter as ctk
 import os
-import json
-from PIL import Image, ImageTk
+from PIL import Image
 from config import DB_PATH
-from utils.geo_utils import haversine_km, open_google_maps_directions
 
 
 def load_content_from_file(path: str) -> str:
@@ -47,7 +36,7 @@ PAGES = (
     "Food & Drink",
     "Practical Info",
     "Maps & Visuals",
-    "Day Trips & Hidden Gems",
+    "Nearby trips and Hidden gems",
 )
 
 
@@ -170,7 +159,7 @@ class App(ctk.CTk):
             "Food & Drink": "🍛",
             "Practical Info": "ℹ",
             "Maps & Visuals": "🗺",
-            "Day Trips & Hidden Gems": "✨",
+            "Nearby trips and Hidden gems": "✨",
         }
 
         # ----- Menu buttons -----
@@ -250,6 +239,8 @@ class App(ctk.CTk):
                 self.pages[name] = ItinerariesPage(self.content)
             elif name == "Accommodation":
                 self.pages[name] = AccommodationPage(self.content)
+            elif name == "Nearby trips and Hidden gems":
+                self.pages[name] = NearbyTripsPage(self.content)
             else:
                 self.pages[name] = PlaceholderPage(self.content, name)
 

@@ -3,6 +3,7 @@ import os
 from PIL import Image
 from pages.top_attraction.data import load_attractions
 import json
+from utils.page_header import BluePageHeader
 
 
 class FastScrollableFrame(ctk.CTkScrollableFrame):
@@ -26,16 +27,7 @@ class TopAttractionsPage(FastScrollableFrame):  # or ctk.CTkScrollableFrame
     def __init__(self, parent):
         super().__init__(parent, scroll_speed=4)   # if using FastScrollableFrame
 
-        # ===== Header section =====
-        header = ctk.CTkFrame(self, fg_color="#0078D4", corner_radius=0)
-        header.pack(fill="x", padx=0, pady=0)
-
-        ctk.CTkLabel(
-            header,
-            text="🏖 Top Attractions",
-            font=ctk.CTkFont(size=26, weight="bold"),
-            text_color="white"
-        ).pack(pady=16)
+        BluePageHeader(self, title="Top Attractions")
 
         # ===== Main area background =====
         container = ctk.CTkFrame(self, fg_color="#F3F6FB", corner_radius=0)

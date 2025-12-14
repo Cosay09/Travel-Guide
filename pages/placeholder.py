@@ -1,6 +1,5 @@
 import customtkinter as ctk
 
-
 class PlaceholderPage(ctk.CTkFrame):
     def __init__(self, parent, name):
         super().__init__(parent)

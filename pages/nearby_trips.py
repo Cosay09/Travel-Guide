@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import json
 import webbrowser
+from utils.page_header import BluePageHeader
 
 
 DATA_PATH = "pages/data/nearby_trips.json"
@@ -10,22 +11,9 @@ class NearbyTripsPage(ctk.CTkFrame):
 
     def __init__(self, parent):
         super().__init__(parent)
+        BluePageHeader(self, title="Nearby Trips & Hidden Gems")
 
         self.trips = self.load_data()
-
-        # ===== Header =====
-        ctk.CTkLabel(
-            self,
-            text="Nearby Trips & Hidden Gems",
-            font=ctk.CTkFont(size=22, weight="bold")
-        ).pack(pady=(20, 5))
-
-        ctk.CTkLabel(
-            self,
-            text="Short escapes and lesser-known places worth exploring",
-            font=ctk.CTkFont(size=13),
-            text_color="#6B7280"
-        ).pack(pady=(0, 15))
 
         # ===== Filters =====
         filter_bar = ctk.CTkFrame(self)

@@ -1,22 +1,14 @@
 import customtkinter as ctk
 from utils.accommodation_logic import get_accommodation_results, estimate_accommodation_cost
 import webbrowser
+from utils.page_header import BluePageHeader
 
 
 class AccommodationPage(ctk.CTkFrame):
 
     def __init__(self, parent):
         super().__init__(parent)
-
-        # ===== Header =====
-        header = ctk.CTkFrame(self, fg_color="#0F172A")
-        header.pack(fill="x")
-        ctk.CTkLabel(
-            header,
-            text="🏨 Accommodation",
-            font=ctk.CTkFont(size=18, weight="bold"),
-            text_color="white"
-        ).pack(pady=10)
+        BluePageHeader(self, title="Top Attractions")
 
         # ===== Main container =====
         main = ctk.CTkFrame(self, fg_color="#F3F6FB")

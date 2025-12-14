@@ -20,16 +20,6 @@
     "map_query": "Mahasthangarh Bogura"
   },
   {
-    "name": "Inani Beach",
-    "from": "Cox's Bazar",
-    "distance_km": 25,
-    "ideal_duration": "Half day",
-    "category": "Hidden Gem",
-    "summary": "Rocky beach with fewer crowds and stunning sunsets.",
-    "location": "Cox's Bazar",
-    "map_query": "Inani Beach Cox's Bazar"
-  },
-  {
     "name": "Himchari National Park",
     "from": "Cox's Bazar",
     "distance_km": 12,
@@ -168,5 +158,55 @@
     "summary": "Coastal road offering dramatic sea, hill, and sunset views.",
     "location": "Cox's Bazar",
     "map_query": "Marine Drive Cox's Bazar"
+  },
+  {
+    "name": "Sundarbans Mangrove Forest",
+    "from": "Khulna",
+    "distance_km": 60,
+    "ideal_duration": "2–3 days",
+    "category": "Nature Expedition",
+    "summary": "World’s largest mangrove forest, home to the Royal Bengal Tiger.",
+    "location": "Sundarbans",
+    "map_query": "Sundarbans Mangrove Forest Bangladesh"
+  },
+  {
+    "name": "Saint Martin’s Island",
+    "from": "Teknaf",
+    "distance_km": 9,
+    "ideal_duration": "1–2 days",
+    "category": "Island Getaway",
+    "summary": "Only coral island of Bangladesh with crystal-clear waters.",
+    "location": "Saint Martin's Island",
+    "map_query": "Saint Martin's Island Bangladesh"
+  },
+  {
+    "name": "Sajek Valley",
+    "from": "Khagrachhari",
+    "distance_km": 70,
+    "ideal_duration": "1–2 days",
+    "category": "Hill Retreat",
+    "summary": "Cloud-kissed hills, tribal villages, and dramatic sunsets.",
+    "location": "Sajek",
+    "map_query": "Sajek Valley Bangladesh"
+  },
+  {
+    "name": "Bandarban Hill District",
+    "from": "Chattogram",
+    "distance_km": 110,
+    "ideal_duration": "2–3 days",
+    "category": "Adventure Destination",
+    "summary": "Hills, waterfalls, trekking routes, and indigenous culture.",
+    "location": "Bandarban",
+    "map_query": "Bandarban Hill District"
+  },
+  {
+    "name": "Tanguar Haor",
+    "from": "Sunamganj",
+    "distance_km": 30,
+    "ideal_duration": "1–2 days",
+    "category": "Wetland Escape",
+    "summary": "Vast wetland ecosystem with floating villages and migratory birds.",
+    "location": "Tanguar Haor",
+    "map_query": "Tanguar Haor Sunamganj"
   }
 ]

@@ -23,20 +23,27 @@ def load_accommodation(destination: str) -> dict:
 def filter_hotels(hotels, tier=None, min_price=None, max_price=None):
     results = []
 
-    for h in hotels:
-        pmin = h["price_range"]["min"]
-        pmax = h["price_range"]["max"]
-
-        if tier and tier != "any" and h.get("tier") != tier:
-            continue
-        if min_price is not None and pmax < min_price:
-            continue
-        if max_price is not None and pmin > max_price:
+    for hotel in hotels:
+        # tier filter
+        if tier and hotel.get("tier") != tier:
             continue
 
-        results.append(h)
+        price_range = hotel.get("price_range", {})
+        hotel_min = price_range.get("min", 0)
+        hotel_max = price_range.get("max", float("inf"))
+
+        # min price filter
+        if min_price is not None and hotel_max < min_price:
+            continue
+
+        # max price filter
+        if max_price is not None and hotel_min > max_price:
+            continue
+
+        results.append(hotel)
 
     return results
+
 
 
 def estimate_accommodation_cost(hotel: dict, nights: int, rooms: int) -> dict:

@@ -4,7 +4,8 @@ from pages.top_attraction.data import load_attractions
 from utils.itinerary_utils import resolve_city_coords, compute_trip_estimate, accommodation_cost, food_cost
 from utils.itinerary_presets import get_preset_for_destination, preset_to_plan
 from utils.pdf_export import export_itinerary_to_pdf   
-from utils.geo_utils import open_google_maps_directions              
+from utils.geo_utils import open_google_maps_directions 
+from utils.page_header import BluePageHeader        
 
 class ItinerariesPage(ctk.CTkFrame):
 
@@ -23,15 +24,7 @@ class ItinerariesPage(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent)
 
-        # ---------- Header ----------
-        header = ctk.CTkFrame(self, fg_color="#0F172A")
-        header.pack(fill="x")
-        ctk.CTkLabel(
-            header,
-            text="🗺 Build Your Custom Itinerary",
-            font=ctk.CTkFont(size=20, weight="bold"),
-            text_color="white"
-        ).pack(pady=10)
+        BluePageHeader(self, title="Itineraries")
 
         # ---------- Main background (grid: top split + bottom results) ----------
         main = ctk.CTkFrame(self, fg_color="#F3F6FB")
