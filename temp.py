@@ -9,6 +9,8 @@ from pages.top_attractions import TopAttractionsPage
 from pages.itineraries import ItinerariesPage
 from pages.accommodation import AccommodationPage
 from pages.nearby_trips import NearbyTripsPage
+from pages.practical_info import PracticalInfoPage
+from pages.transportation import TransportationPage
 
 import customtkinter as ctk
 import os
@@ -241,6 +243,10 @@ class App(ctk.CTk):
                 self.pages[name] = AccommodationPage(self.content)
             elif name == "Nearby trips and Hidden gems":
                 self.pages[name] = NearbyTripsPage(self.content)
+            elif name == "Practical Info":
+                self.pages[name] = PracticalInfoPage(self.content)
+            elif name == "Local Transportation":
+                self.pages[name] = TransportationPage(self.content)
             else:
                 self.pages[name] = PlaceholderPage(self.content, name)
 

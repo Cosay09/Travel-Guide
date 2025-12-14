@@ -1,0 +1,195 @@
+{
+  "Dhaka -> Cox's Bazar": {
+    "recommended": "bus",
+    "bus": {
+      "time": "10–12 hours",
+      "ac_fare": "৳1900–4000",
+      "non_ac_fare": "৳800–2000",
+      "best_for": ["Budget", "Overnight", "Groups"],
+      "operators": [
+        "Green Line Paribahan",
+        "Shohagh Paribahan",
+        "Shyamoli Paribahan",
+        "Hanif Enterprise"
+      ],
+      "terminals": {
+        "departure": ["Gabtoli", "Sayedabad", "Kallyanpur"],
+        "arrival": ["Kalatoli", "Jhautola"]
+      },
+      "notes": ["Most popular option", "Overnight buses available"]
+    },
+    "air": {
+      "time": "1 hour",
+      "fare": "৳6000–12000",
+      "best_for": ["Fastest", "Comfort"],
+      "operators": ["Biman", "US-Bangla", "Novoair"],
+      "notes": ["Fastest option", "Weather dependent"]
+    }
+  },
+
+  "Dhaka -> Sylhet": {
+    "recommended": "bus",
+    "bus": {
+      "time": "6–7 hours",
+      "ac_fare": "৳800–1500",
+      "non_ac_fare": "৳500–700",
+      "best_for": ["Budget", "Frequent Travel", "Overnight"],
+      "operators": ["Green Line", "London Express", "Ena", "Hanif"],
+      "terminals": {
+        "departure": ["Gabtoli", "Sayedabad"],
+        "arrival": ["Sylhet Bus Station"]
+      },
+      "notes": ["Very frequent departures"]
+    },
+    "train": {
+      "time": "7–8 hours",
+      "fare": "৳300–1500",
+      "best_for": ["Scenic", "Budget"],
+      "notes": ["Multiple intercity trains"]
+    }
+  },
+
+  "Dhaka -> Chattogram": {
+    "recommended": "bus",
+    "bus": {
+      "time": "6–8 hours",
+      "ac_fare": "৳600–1500",
+      "non_ac_fare": "৳400–1000",
+      "best_for": ["Budget", "Flexible Timing"],
+      "operators": ["Desh Travels", "Green Line", "S Alam", "Shyamoli"],
+      "terminals": {
+        "departure": ["Gabtoli", "Sayedabad"],
+        "arrival": ["Chattogram Bus Terminal"]
+      },
+      "notes": ["High frequency route"]
+    }
+  },
+
+  "Dhaka -> Bandarban": {
+    "recommended": "bus",
+    "bus": {
+      "time": "7–9 hours",
+      "fare": "৳900–1800",
+      "best_for": ["Hills", "Adventure", "Budget"],
+      "operators": ["Shyamoli", "Hanif", "S Alam"],
+      "notes": ["Night buses available", "Day travel safer in hills"]
+    }
+  },
+
+  "Dhaka -> Rangamati": {
+    "recommended": "bus",
+    "bus": {
+      "time": "8–9 hours",
+      "fare": "৳900–1800",
+      "best_for": ["Lake Views", "Hills", "Budget"],
+      "operators": ["Shyamoli", "Hanif"],
+      "notes": ["Beautiful route near Kaptai Lake"]
+    }
+  },
+
+  "Dhaka -> Khulna": {
+    "recommended": "bus",
+    "bus": {
+      "time": "8–9 hours",
+      "ac_fare": "৳1200–2000",
+      "non_ac_fare": "৳600–1000",
+      "best_for": ["Sundarbans Gateway", "Budget"],
+      "operators": ["Green Line", "Ena", "Shohagh"],
+      "notes": ["Overnight buses common"]
+    },
+    "train": {
+      "time": "8–10 hours",
+      "fare": "৳400–2000",
+      "best_for": ["Comfort", "Scenic"],
+      "notes": ["Intercity trains available"]
+    }
+  },
+
+  "Chattogram -> Bandarban": {
+    "recommended": "bus",
+    "bus": {
+      "time": "3–4 hours",
+      "fare": "৳500–1200",
+      "best_for": ["Day Trips", "Hills"],
+      "operators": ["Hanif", "Shyamoli", "S Alam"],
+      "notes": ["Hill road", "Travel before evening"]
+    }
+  },
+
+  "Chattogram -> Rangamati": {
+    "recommended": "bus",
+    "bus": {
+      "time": "3–4 hours",
+      "fare": "৳450–900",
+      "best_for": ["Lake", "Short Trips"],
+      "operators": ["Shyamoli", "Local Services"],
+      "notes": ["Popular weekend route"]
+    }
+  },
+
+  "Cox's Bazar -> Teknaf": {
+    "recommended": "bus",
+    "bus": {
+      "time": "2–3 hours",
+      "fare": "৳150–500",
+      "best_for": ["Short Trips", "Budget"],
+      "operators": ["Local Services"],
+      "notes": ["Gateway to Saint Martin’s Island"]
+    }
+  },
+
+  "Teknaf -> Saint Martin’s Island": {
+    "recommended": "ferry",
+    "ferry": {
+      "time": "2–2.5 hours",
+      "fare": "৳800–1600",
+      "best_for": ["Island Access", "Scenic"],
+      "operators": ["Keari Sindbad", "Local Ferries"],
+      "notes": ["Seasonal (Oct–Mar)", "Weather dependent"]
+    }
+  },
+
+  "Sylhet -> Jaflong": {
+    "recommended": "local",
+    "local": {
+      "time": "2 hours",
+      "fare": "৳150–300",
+      "best_for": ["Day Trips", "Budget"],
+      "modes": ["CNG", "Local Bus"],
+      "notes": ["Early morning recommended"]
+    }
+  },
+
+  "Sylhet -> Bholaganj": {
+    "recommended": "local",
+    "local": {
+      "time": "2–3 hours",
+      "fare": "৳200–400",
+      "best_for": ["Nature", "Day Trips"],
+      "modes": ["CNG", "Microbus"],
+      "notes": ["Hire private vehicle for flexibility"]
+    }
+  },
+
+  "Khulna -> Sundarbans": {
+    "recommended": "boat",
+    "boat": {
+      "time": "1–3 days",
+      "fare": "৳8000–30000",
+      "best_for": ["Wildlife", "Adventure", "Guided Tours"],
+      "operators": ["Licensed Tour Operators"],
+      "notes": ["Permit required", "Includes food & lodging"]
+    }
+  },
+
+  "Sunamganj -> Tanguar Haor": {
+    "recommended": "boat",
+    "boat": {
+      "time": "3–6 hours",
+      "fare": "৳1500–5000",
+      "best_for": ["Haor Life", "Nature", "Photography"],
+      "operators": ["Local Boatmen"],
+      "notes": ["Best during monsoon (Jun–Sep)"]
+    }
+  }
+}

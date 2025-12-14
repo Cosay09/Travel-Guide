@@ -1,0 +1,156 @@
+{
+  "General": {
+    "Safety": [
+      "Bangladesh is generally safe for tourists, especially in popular destinations.",
+      "Avoid isolated areas late at night.",
+      "Always follow local authority warnings, especially near beaches and hills."
+    ],
+    "Money & Payments": [
+      "Currency used is Bangladeshi Taka (BDT).",
+      "Cash is widely used outside major hotels and restaurants.",
+      "ATMs are available in cities and tourist hubs."
+    ],
+    "Internet & SIM": [
+      "4G coverage is available in most urban and tourist areas.",
+      "Popular SIM providers include Grameenphone, Robi, and Banglalink.",
+      "Tourist SIMs can be purchased with passport identification."
+    ],
+    "Local Etiquette": [
+      "Dress modestly in towns, villages, and religious sites.",
+      "Remove shoes before entering mosques or temples.",
+      "Ask permission before photographing people."
+    ],
+    "Emergency": [
+      "National emergency number: 999",
+      "Tourist Police Hotline: +880 960-999-5555"
+    ]
+  },
+
+  "Cox's Bazar Beach": {
+    "Beach Safety": [
+      "Swim only in designated areas monitored by lifeguards.",
+      "Pay attention to red flag warnings before entering the sea.",
+      "Strong currents may occur during monsoon season."
+    ],
+    "Local Tips": [
+      "Early morning and late afternoon are best to avoid crowds.",
+      "Keep belongings secure on busy beach sections."
+    ]
+  },
+
+  "Saint Martin's Island": {
+    "Travel Tips": [
+      "Ferries operate only during daylight hours.",
+      "Trips may be cancelled due to rough sea conditions."
+    ],
+    "Accommodation & Food": [
+      "Electricity may be limited at night.",
+      "Seafood is widely available and freshly prepared."
+    ]
+  },
+
+  "Sundarbans": {
+    "Safety & Permits": [
+      "Entry permits are mandatory and arranged via tour operators.",
+      "Always travel with licensed guides and armed forest guards."
+    ],
+    "Health Tips": [
+      "Carry mosquito repellent and necessary medications.",
+      "Drinking bottled or purified water is essential."
+    ]
+  },
+
+  "Sajek Valley": {
+    "Travel Advice": [
+      "Road travel is restricted after evening hours.",
+      "Weather can change rapidly, especially in winter."
+    ],
+    "Local Etiquette": [
+      "Respect indigenous communities and their traditions.",
+      "Avoid littering hill areas."
+    ]
+  },
+
+  "Ahsan Manzil": {
+    "Visiting Hours": [
+      "Closed on Thursdays.",
+      "Morning hours are less crowded."
+    ],
+    "Visitor Tips": [
+      "Photography may be restricted in certain areas.",
+      "Dress modestly when visiting historic sites."
+    ]
+  },
+
+  "Sukhiya Valley": {
+    "Travel Tips": [
+      "Best visited during dry months for easier trekking.",
+      "Local guides are recommended."
+    ],
+    "Preparation": [
+      "Wear comfortable walking shoes.",
+      "Carry drinking water and snacks."
+    ]
+  },
+
+  "Kaptai Lake": {
+    "Boat Safety": [
+      "Use life jackets during boat rides.",
+      "Avoid travel during storms or heavy rain."
+    ],
+    "Best Experience": [
+      "Morning boat rides offer calm waters and scenic views."
+    ]
+  },
+
+  "Jaflong": {
+    "Border Area Advisory": [
+      "Stay within designated tourist areas.",
+      "Photography near border zones may be restricted."
+    ],
+    "Seasonal Tips": [
+      "Monsoon enhances natural beauty but may cause slippery paths."
+    ]
+  },
+
+  "Langlok Waterfall": {
+    "Trekking Advice": [
+      "Visit during daylight hours only.",
+      "Hire local guides for safe navigation."
+    ],
+    "Safety": [
+      "Rocks can be slippery during and after rainfall."
+    ]
+  },
+
+  "Bholaganj": {
+    "Nature Tips": [
+      "Stone beds may flood during heavy rain.",
+      "Swimming is not advised during strong currents."
+    ],
+    "Local Guidance": [
+      "Follow local advice regarding safe paths."
+    ]
+  },
+
+  "Tanguar Haor": {
+    "Seasonal Travel": [
+      "Best visited between November and March.",
+      "Boat travel is common during monsoon season."
+    ],
+    "Environmental Care": [
+      "Avoid disturbing bird habitats.",
+      "Plastic use is discouraged."
+    ]
+  },
+
+  "As-Salam Jame Mosque": {
+    "Visiting Etiquette": [
+      "Modest dress is required for all visitors.",
+      "Remove shoes before entering prayer areas."
+    ],
+    "Prayer Times": [
+      "Avoid visits during active prayer times unless participating."
+    ]
+  }
+}
