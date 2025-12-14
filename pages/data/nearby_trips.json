@@ -10,16 +10,6 @@
     "map_query": "Inani Beach Cox's Bazar"
   },
   {
-    "name": "Mahasthangarh",
-    "from": "Bogura",
-    "distance_km": 12,
-    "ideal_duration": "1 day",
-    "category": "Nearby Trip",
-    "summary": "Ancient archaeological site dating back to 3rd century BC.",
-    "location": "Bogura",
-    "map_query": "Mahasthangarh Bogura"
-  },
-  {
     "name": "Himchari National Park",
     "from": "Cox's Bazar",
     "distance_km": 12,
@@ -30,24 +20,14 @@
     "map_query": "Himchari National Park Cox's Bazar"
   },
   {
-    "name": "Dulahazra Safari Park",
+    "name": "Sonadia Island",
     "from": "Cox's Bazar",
-    "distance_km": 50,
-    "ideal_duration": "Half day",
-    "category": "Nearby Trip",
-    "summary": "Wildlife safari park featuring elephants, deer, and birds.",
-    "location": "Chakaria",
-    "map_query": "Dulahazra Safari Park"
-  },
-  {
-    "name": "Adinath Temple",
-    "from": "Cox's Bazar",
-    "distance_km": 35,
+    "distance_km": 15,
     "ideal_duration": "Half day",
     "category": "Hidden Gem",
-    "summary": "Ancient Hindu temple atop a hill with views of the Bay of Bengal.",
-    "location": "Maheshkhali",
-    "map_query": "Adinath Temple Maheshkhali"
+    "summary": "Quiet island known for migratory birds and pristine beaches.",
+    "location": "Cox's Bazar",
+    "map_query": "Sonadia Island Cox's Bazar"
   },
   {
     "name": "Maheshkhali Island",
@@ -60,14 +40,14 @@
     "map_query": "Maheshkhali Island"
   },
   {
-    "name": "Sonadia Island",
+    "name": "Adinath Temple",
     "from": "Cox's Bazar",
-    "distance_km": 15,
+    "distance_km": 35,
     "ideal_duration": "Half day",
     "category": "Hidden Gem",
-    "summary": "Quiet island known for migratory birds and pristine beaches.",
-    "location": "Cox's Bazar",
-    "map_query": "Sonadia Island Cox's Bazar"
+    "summary": "Ancient Hindu temple atop a hill with views of the Bay of Bengal.",
+    "location": "Maheshkhali",
+    "map_query": "Adinath Temple Maheshkhali"
   },
   {
     "name": "Teknaf Sea Beach",
@@ -110,26 +90,6 @@
     "map_query": "Radiant Fish World Cox's Bazar"
   },
   {
-    "name": "Buddhist Temple at Ramu",
-    "from": "Cox's Bazar",
-    "distance_km": 15,
-    "ideal_duration": "2–3 hours",
-    "category": "Cultural Hidden Gem",
-    "summary": "Historic Buddhist monasteries and statues along the river.",
-    "location": "Ramu",
-    "map_query": "Ramu Buddhist Temple Cox's Bazar"
-  },
-  {
-    "name": "Bangabandhu Sheikh Mujib Safari Park",
-    "from": "Cox's Bazar",
-    "distance_km": 48,
-    "ideal_duration": "Half day",
-    "category": "Nearby Trip",
-    "summary": "Large safari park with protected wildlife and forest trails.",
-    "location": "Chakaria",
-    "map_query": "Bangabandhu Sheikh Mujib Safari Park Cox's Bazar"
-  },
-  {
     "name": "Laboni Beach at Sunrise",
     "from": "Cox's Bazar",
     "distance_km": 2,
@@ -138,16 +98,6 @@
     "summary": "Early morning calm with fishermen and golden sunrise views.",
     "location": "Cox's Bazar",
     "map_query": "Laboni Beach Cox's Bazar"
-  },
-  {
-    "name": "Kolatoli Cliff View",
-    "from": "Cox's Bazar",
-    "distance_km": 5,
-    "ideal_duration": "1 hour",
-    "category": "Hidden Gem",
-    "summary": "Less-known elevated spot overlooking the coastline.",
-    "location": "Cox's Bazar",
-    "map_query": "Kolatoli Cox's Bazar viewpoint"
   },
   {
     "name": "Marine Drive Scenic Route",
@@ -159,16 +109,114 @@
     "location": "Cox's Bazar",
     "map_query": "Marine Drive Cox's Bazar"
   },
+
+  {
+    "name": "Mahasthangarh",
+    "from": "Bogura",
+    "distance_km": 12,
+    "ideal_duration": "1 day",
+    "category": "Nearby Trip",
+    "summary": "Ancient archaeological site dating back to the 3rd century BC.",
+    "location": "Bogura",
+    "map_query": "Mahasthangarh Bogura"
+  },
+  {
+    "name": "Vasu Bihar",
+    "from": "Bogura",
+    "distance_km": 18,
+    "ideal_duration": "2–3 hours",
+    "category": "Hidden Gem",
+    "summary": "Ruins of a Buddhist monastery from the Pala dynasty.",
+    "location": "Bogura",
+    "map_query": "Vasu Bihar Bogura"
+  },
+
+  {
+    "name": "Ratargul Swamp Forest",
+    "from": "Sylhet",
+    "distance_km": 45,
+    "ideal_duration": "Half day",
+    "category": "Hidden Gem",
+    "summary": "Freshwater swamp forest best explored by boat.",
+    "location": "Sylhet",
+    "map_query": "Ratargul Swamp Forest"
+  },
+  {
+    "name": "Jaflong",
+    "from": "Sylhet",
+    "distance_km": 60,
+    "ideal_duration": "1 day",
+    "category": "Nearby Trip",
+    "summary": "Tea gardens, river views, and border landscapes.",
+    "location": "Sylhet",
+    "map_query": "Jaflong Sylhet"
+  },
+
+  {
+    "name": "Sonargaon",
+    "from": "Dhaka",
+    "distance_km": 30,
+    "ideal_duration": "Half day",
+    "category": "Nearby Trip",
+    "summary": "Historic capital with museums and ancient ruins.",
+    "location": "Narayanganj",
+    "map_query": "Sonargaon Dhaka"
+  },
+  {
+    "name": "Bhawal National Park",
+    "from": "Dhaka",
+    "distance_km": 40,
+    "ideal_duration": "Half day",
+    "category": "Hidden Gem",
+    "summary": "Forested national park ideal for a nature escape.",
+    "location": "Gazipur",
+    "map_query": "Bhawal National Park"
+  },
+
+  {
+    "name": "Sajek Valley",
+    "from": "Khagrachhari",
+    "distance_km": 70,
+    "ideal_duration": "1–2 days",
+    "category": "Hill Retreat",
+    "summary": "Cloud-kissed hills, tribal villages, and dramatic sunsets.",
+    "location": "Sajek",
+    "map_query": "Sajek Valley Bangladesh"
+  },
+
+  {
+    "name": "Bandarban Hill District",
+    "from": "Chattogram",
+    "distance_km": 110,
+    "ideal_duration": "2–3 days",
+    "category": "Adventure Destination",
+    "summary": "Hills, waterfalls, trekking routes, and indigenous culture.",
+    "location": "Bandarban",
+    "map_query": "Bandarban Hill District"
+  },
+
   {
     "name": "Sundarbans Mangrove Forest",
     "from": "Khulna",
     "distance_km": 60,
     "ideal_duration": "2–3 days",
     "category": "Nature Expedition",
-    "summary": "World’s largest mangrove forest, home to the Royal Bengal Tiger.",
+    "summary": "World’s largest mangrove forest and UNESCO World Heritage site.",
     "location": "Sundarbans",
     "map_query": "Sundarbans Mangrove Forest Bangladesh"
   },
+
+  {
+    "name": "Tanguar Haor",
+    "from": "Sunamganj",
+    "distance_km": 30,
+    "ideal_duration": "1–2 days",
+    "category": "Wetland Escape",
+    "summary": "Vast wetland ecosystem with migratory birds and floating villages.",
+    "location": "Tanguar Haor",
+    "map_query": "Tanguar Haor Sunamganj"
+  },
+
   {
     "name": "Saint Martin’s Island",
     "from": "Teknaf",
@@ -180,33 +228,123 @@
     "map_query": "Saint Martin's Island Bangladesh"
   },
   {
-    "name": "Sajek Valley",
-    "from": "Khagrachhari",
+    "name": "Nilgiri Hills",
+    "from": "Bandarban",
+    "distance_km": 45,
+    "ideal_duration": "Half day",
+    "category": "Nearby Trip",
+    "summary": "High-altitude viewpoint with clouds, winding roads, and hill scenery.",
+    "location": "Bandarban",
+    "map_query": "Nilgiri Bandarban"
+  },
+  {
+    "name": "Boga Lake",
+    "from": "Bandarban",
     "distance_km": 70,
     "ideal_duration": "1–2 days",
-    "category": "Hill Retreat",
-    "summary": "Cloud-kissed hills, tribal villages, and dramatic sunsets.",
-    "location": "Sajek",
-    "map_query": "Sajek Valley Bangladesh"
-  },
-  {
-    "name": "Bandarban Hill District",
-    "from": "Chattogram",
-    "distance_km": 110,
-    "ideal_duration": "2–3 days",
-    "category": "Adventure Destination",
-    "summary": "Hills, waterfalls, trekking routes, and indigenous culture.",
+    "category": "Hidden Gem",
+    "summary": "Natural lake surrounded by hills and indigenous communities.",
     "location": "Bandarban",
-    "map_query": "Bandarban Hill District"
+    "map_query": "Boga Lake Bandarban"
   },
   {
-    "name": "Tanguar Haor",
-    "from": "Sunamganj",
+    "name": "Nilachal Viewpoint",
+    "from": "Bandarban",
+    "distance_km": 5,
+    "ideal_duration": "1–2 hours",
+    "category": "Hidden Experience",
+    "summary": "Hilltop viewpoint overlooking Bandarban town and surrounding valleys.",
+    "location": "Bandarban",
+    "map_query": "Nilachal Bandarban"
+  },
+  {
+    "name": "Patenga Beach",
+    "from": "Chattogram",
+    "distance_km": 14,
+    "ideal_duration": "Evening visit",
+    "category": "Nearby Trip",
+    "summary": "Popular beach near the city with sunset views and sea breeze.",
+    "location": "Chattogram",
+    "map_query": "Patenga Beach Chattogram"
+  },
+  {
+    "name": "Foy’s Lake",
+    "from": "Chattogram",
+    "distance_km": 8,
+    "ideal_duration": "Half day",
+    "category": "Nearby Experience",
+    "summary": "Man-made lake surrounded by hills with boating and leisure activities.",
+    "location": "Chattogram",
+    "map_query": "Foys Lake Chattogram"
+  },
+  {
+    "name": "Kaptai Lake",
+    "from": "Rangamati",
+    "distance_km": 10,
+    "ideal_duration": "Half day",
+    "category": "Nearby Trip",
+    "summary": "Largest artificial lake in Bangladesh with boat rides and hill views.",
+    "location": "Rangamati",
+    "map_query": "Kaptai Lake Rangamati"
+  },
+  {
+    "name": "Shuvolong Waterfall",
+    "from": "Rangamati",
+    "distance_km": 25,
+    "ideal_duration": "Half day",
+    "category": "Hidden Gem",
+    "summary": "Seasonal waterfall accessible by boat through Kaptai Lake.",
+    "location": "Rangamati",
+    "map_query": "Shuvolong Waterfall Rangamati"
+  },
+  {
+    "name": "Kuakata Sea Beach",
+    "from": "Patuakhali",
     "distance_km": 30,
     "ideal_duration": "1–2 days",
-    "category": "Wetland Escape",
-    "summary": "Vast wetland ecosystem with floating villages and migratory birds.",
-    "location": "Tanguar Haor",
-    "map_query": "Tanguar Haor Sunamganj"
+    "category": "Beach Getaway",
+    "summary": "Rare beach where both sunrise and sunset can be seen over the sea.",
+    "location": "Kuakata",
+    "map_query": "Kuakata Sea Beach"
+  },
+  {
+    "name": "Madhabkunda Waterfall",
+    "from": "Sylhet",
+    "distance_km": 70,
+    "ideal_duration": "Half day",
+    "category": "Nearby Trip",
+    "summary": "One of the largest waterfalls in Bangladesh near the Indian border.",
+    "location": "Moulvibazar",
+    "map_query": "Madhabkunda Waterfall"
+  },
+  {
+    "name": "Panam Nagar",
+    "from": "Dhaka",
+    "distance_km": 33,
+    "ideal_duration": "2–3 hours",
+    "category": "Hidden Gem",
+    "summary": "Abandoned historic city with colonial-era buildings.",
+    "location": "Sonargaon",
+    "map_query": "Panam Nagar Sonargaon"
+  },
+  {
+    "name": "Jamuna River Bank",
+    "from": "Sirajganj",
+    "distance_km": 5,
+    "ideal_duration": "Evening visit",
+    "category": "Hidden Experience",
+    "summary": "Wide river views with sunset, boats, and open landscapes.",
+    "location": "Sirajganj",
+    "map_query": "Jamuna River Sirajganj"
+  },
+  {
+    "name": "Char Kukri Mukri",
+    "from": "Bhola",
+    "distance_km": 40,
+    "ideal_duration": "1 day",
+    "category": "Nature Expedition",
+    "summary": "Remote island with mangroves, deer, and birdlife.",
+    "location": "Bhola",
+    "map_query": "Char Kukri Mukri Bhola"
   }
 ]
