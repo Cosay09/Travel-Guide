@@ -35,9 +35,7 @@ PAGES = (
     "Itineraries",
     "Local Transportation",
     "Accommodation",
-    "Food & Drink",
     "Practical Info",
-    "Maps & Visuals",
     "Nearby trips and Hidden gems",
 )
 
@@ -158,9 +156,7 @@ class App(ctk.CTk):
             "Itineraries": "🗓",
             "Local Transportation": "🚆",
             "Accommodation": "🏨",
-            "Food & Drink": "🍛",
             "Practical Info": "ℹ",
-            "Maps & Visuals": "🗺",
             "Nearby trips and Hidden gems": "✨",
         }
 
@@ -181,8 +177,13 @@ class App(ctk.CTk):
             )
             btn.pack(fill="x", padx=12, pady=3)
             self.sidebar_buttons[name] = btn
-            
-        # ----- Logout button directly after last option -----
+        
+        # ----- Spacer to push logout to bottom -----
+        ctk.CTkFrame(
+            self.sidebar,
+            fg_color="transparent"
+        ).pack(fill="both", expand=True)
+
         ctk.CTkButton(
             self.sidebar,
             text="⏏  Logout",
@@ -455,6 +456,35 @@ class LoginFrame(ctk.CTkFrame):
         bullet("Save time with curated top attractions.")
         bullet("Plan trips with itineraries and local tips.")
         bullet("All your info in one simple interface.")
+
+        # ---------- Hero Image ----------
+        img_frame = ctk.CTkFrame(left, fg_color="transparent")
+        img_frame.pack(fill="both", expand=True, padx=20, pady=(0, 16))
+
+        try:
+            hero_img = Image.open("assets/images/login_hero.jpg")
+            hero_ctk_img = ctk.CTkImage(
+                light_image=hero_img,
+                dark_image=hero_img,
+                size=(300, 600)   # 👈 adjust if needed
+            )
+
+            img_label = ctk.CTkLabel(
+                img_frame,
+                image=hero_ctk_img,
+                text=""
+            )
+            img_label.pack(anchor="center", expand=True)
+            self._hero_image = hero_ctk_img
+
+        except Exception as e:
+            ctk.CTkLabel(
+                img_frame,
+                text="Explore Bangladesh 🇧🇩",
+                font=ctk.CTkFont(size=16, weight="bold"),
+                text_color="#E5E7EB"
+            ).pack(expand=True)
+
 
         ctk.CTkLabel(
             left,

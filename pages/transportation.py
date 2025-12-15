@@ -1,6 +1,6 @@
 import customtkinter as ctk
 import json
-
+from utils.page_header import BluePageHeader
 DATA_PATH = "pages/data/transportation.json"
 
 
@@ -9,19 +9,7 @@ class TransportationPage(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent)
 
-        # ===== Header =====
-        ctk.CTkLabel(
-            self,
-            text="Transportation",
-            font=ctk.CTkFont(size=22, weight="bold")
-        ).pack(pady=(20, 4))
-
-        ctk.CTkLabel(
-            self,
-            text="Routes, costs, terminals, and recommended ways to travel",
-            font=ctk.CTkFont(size=13),
-            text_color="#6B7280"
-        ).pack(pady=(0, 14))
+        BluePageHeader(self, title="Transportation Options")
 
         # ===== Load data =====
         self.data = self.load_data()
